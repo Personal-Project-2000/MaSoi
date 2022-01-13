@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">MaSoi</string>
+    <string name="app_name">Ma Sói</string>
+    <string name="frame_TK">Tài khoản</string>
+    <string name="frame_pass">Mật khẩu</string>
+    <string name="btn_Signin">Đăng nhập</string>
+    <string name="check_Signin">Lưu thông tin đăng nhập</string>
+    <string name="forgot">Quên mật khẩu?</string>
+    <string name="txt1">Hoặc đăng nhập bằng</string>
+    <string name="txt2">Bạn chưa có tài khoản?</string>
+    <string name="txt3">Đăng ký ngay</string>
 </resources>

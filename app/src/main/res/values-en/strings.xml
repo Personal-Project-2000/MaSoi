@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wolf Man</string>
+    <string name="frame_TK">Account</string>
+    <string name="frame_pass">Password</string>
+    <string name="btn_Signin">SignIn</string>
+    <string name="check_Signin">Save sign in</string>
+    <string name="forgot">Forgot password?</string>
+    <string name="txt1">Or login with</string>
+    <string name="txt2">Do not have an account?</string>
+    <string name="txt3">Registration</string>
+</resources>
