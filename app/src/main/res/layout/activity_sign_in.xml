@@ -84,7 +84,8 @@
                 android:text="@string/check_Signin"/>
 
             <TextView
-                android:text="@string/forgotPass"
+                android:id="@+id/btnForgot"
+                android:text="@string/forgot"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/donhat"
                 app:layout_constraintRight_toRightOf="parent"
