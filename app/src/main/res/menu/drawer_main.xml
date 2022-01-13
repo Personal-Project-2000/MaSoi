@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_baseline_person_24"
+            android:title="Thông tin cá nhân" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/history"
+            android:title="Lịch sử" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/setting"
+            android:title="Cài đặt" />
+        <item
+            android:id="@+id/nav_create"
+            android:icon="@drawable/room"
+            android:title="Tạo phòng" />
+        <item
+            android:id="@+id/nav_signout"
+            android:icon="@drawable/signout"
+            android:title="Đăng xuất" />
+    </group>
+</menu>

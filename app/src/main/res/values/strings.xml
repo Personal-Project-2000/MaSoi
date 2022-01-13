@@ -8,4 +8,6 @@
     <string name="txt1">Hoặc đăng nhập bằng</string>
     <string name="txt2">Bạn chưa có tài khoản?</string>
     <string name="txt3">Đăng ký ngay</string>
+    <string name="open">mở</string>
+    <string name="close">đóng</string>
 </resources>
