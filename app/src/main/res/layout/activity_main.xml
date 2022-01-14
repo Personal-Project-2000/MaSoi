@@ -30,20 +30,38 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
-            <EditText
-                android:id="@+id/inputSearch"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:hint="Phòng bạn muốn tìm kiếm"
-                android:layout_weight="1"
-                android:textSize="15sp"
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/ic_baseline_mic_24"
-                android:background="@drawable/goctron"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@id/btnMenu"/>
+                app:layout_constraintLeft_toRightOf="@id/btnMenu"
+                android:background="@drawable/goctron"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/inputSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:focusableInTouchMode="true"
+                    android:hint="Phòng bạn muốn tìm kiếm"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="text"/>
+
+                <ImageView
+                    android:id="@+id/imageViewMic"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_mic_24" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
