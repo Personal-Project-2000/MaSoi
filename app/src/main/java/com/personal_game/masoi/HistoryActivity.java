@@ -16,6 +16,7 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.MainAdapter;
+import com.personal_game.masoi.adapter.StoryAdapter;
 import com.personal_game.masoi.databinding.ActivityHistoryBinding;
 import com.personal_game.masoi.databinding.ActivityMainBinding;
 
@@ -59,7 +60,13 @@ public class HistoryActivity extends AppCompatActivity {
             test.add("t");
         }
 
-        historyAdapter = new HistoryAdapter(test, getApplication());
+        historyAdapter = new HistoryAdapter(test, getApplication(), new HistoryAdapter.HistoryListeners() {
+            @Override
+            public void onClick(String str) {
+                Intent intent = new Intent(getApplication(), StoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         activityHistoryBinding.rclHistory.setAdapter(historyAdapter);
     }

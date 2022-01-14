@@ -14,10 +14,12 @@ import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private final List<String> historyList;
+    private final HistoryListeners historyListeners;
     private final Context context;
 
-    public HistoryAdapter(List<String> historyList, Context context){
+    public HistoryAdapter(List<String> historyList, Context context, HistoryListeners historyListeners){
         this.historyList = historyList;
+        this.historyListeners = historyListeners;
         this.context = context;
     }
 
@@ -51,7 +53,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
 
         public void setData() {
-
+            binding.layoutMain.setOnClickListener(v -> {
+                historyListeners.onClick("hihi");
+            });
         }
+    }
+
+    public interface HistoryListeners {
+        void onClick(String str);
     }
 }
