@@ -21,9 +21,6 @@
         </activity>
         <activity
             android:name=".StoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HistoryActivity"
             android:exported="true" >
 
             <intent-filter>
@@ -31,6 +28,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="true" >
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".SettingActivity"

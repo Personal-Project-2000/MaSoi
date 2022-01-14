@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hôm nay thần tình yêu(D) rất vui vẻ nên đã ban tình yêu tốt đẹp đến 2 bạn trẻ là ông F và chị H. Bắt đầu hoàng hôn buôn xuống anh Bảo Vệ(E) hôm nay bỗng dưng cảm thấy 1 điều bất an nên đã sang nhà chị D để bảo vệ chị, khi màn đêm vừa bầy sói(A, B, C, P) vào buổi sáng nhìn thấy chị D ngọt thịt qua vì thế đêm nay chúng đã quyết xơi chị D nhưng xui sao bọn sói lại không biết nên đã bị anh Bảo Vệ làm cho một trận, cùng lúc đó người tiên tri bí ẩn của làng(L) đã dùng khả năng tiên đoán của bản thân mình chị D xem chị có phải là sói không, nhưng chị D không phải là sói và điều đó đã giúp bà L tin tưởng hơn vào chị D. Ông phù thủy(F) dùng khả năng cảm nhận cảm thấy đêm nay không có người chết nên ông ta không dùng bình thuốc, nhưng ông ta lại nghi ngờ anh A là sói nên ông đã cho 1 bình thuốc độc vào nhà anh ấy. Ông Thợ Săn(G) thì chọn chị P làm bạn chết chung. Chị thổi sáo(H) có lời nguyền cứ ban đêm là đi thôi niêm những dân làng, đêm nay anh ta đẫ thôi niêm anh A và chị K."
+        android:gravity="center_vertical"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
