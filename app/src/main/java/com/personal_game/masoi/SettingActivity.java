@@ -3,6 +3,7 @@ package com.personal_game.masoi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,27 +13,45 @@ import android.widget.Toast;
 
 import com.personal_game.masoi.Object.SpinnerObject;
 import com.personal_game.masoi.adapter.SpinnerAdapter;
+import com.personal_game.masoi.databinding.ActivityHistoryBinding;
+import com.personal_game.masoi.databinding.ActivitySettingBinding;
 
 import java.util.ArrayList;
 
 public class SettingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
+    private ActivitySettingBinding activitySettingBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        activitySettingBinding = ActivitySettingBinding.inflate(getLayoutInflater());
+        View view = activitySettingBinding.getRoot();
+        setContentView(view);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        Spinner spinner;
+        init();
+    }
 
-        spinner = (Spinner) findViewById(R.id.spinner);
+    private void init(){
+        setListeners();
+        setSpinner();
+    }
 
+    private void setListeners(){
+        activitySettingBinding.btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplication(), MainActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void setSpinner(){
         SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, getSpinnerList());
-        if(spinner != null) {
-            spinner.setAdapter(spinnerAdapter);
-            spinner.setOnItemSelectedListener(this);
+        if(activitySettingBinding.spinner != null) {
+            activitySettingBinding.spinner.setAdapter(spinnerAdapter);
+            activitySettingBinding.spinner.setOnItemSelectedListener(this);
         }
     }
 

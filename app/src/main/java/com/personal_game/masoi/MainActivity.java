@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,8 +21,10 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.MainAdapter;
 import com.personal_game.masoi.databinding.ActivityMainBinding;
+import com.personal_game.masoi.databinding.ActivitySignInBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,20 +32,69 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private MainAdapter mainAdapter;
+    private ActivityMainBinding activityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = activityMainBinding.getRoot();
+        setContentView(view);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        findViewById(R.id.btnMenu).setOnClickListener(v -> {
+        init();
+    }
+
+    private void init(){
+       setListeners();
+       setRoom();
+    }
+
+    private void setListeners(){
+        activityMainBinding.btnMenu.setOnClickListener(v -> {
             DrawerLayout d =  findViewById(R.id.drawerLayout);
             d.openDrawer(GravityCompat.START);
         });
 
+        activityMainBinding.navigationView.setItemIconTintList(null);
+
+        activityMainBinding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_info: {
+                        Intent intent = new Intent(getApplication(), InfoActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case R.id.nav_history: {
+                        Intent intent = new Intent(getApplication(), HistoryActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case R.id.nav_setting: {
+                        Intent intent = new Intent(getApplication(), SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case R.id.nav_create: {
+
+                        break;
+                    }
+                    case R.id.nav_signout: {
+                        Intent intent = new Intent(getApplication(), SignInActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void setRoom(){
         List<String> test = new ArrayList<>();
 
         for(int i = 0; i < 20; i++){
