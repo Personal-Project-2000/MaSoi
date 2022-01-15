@@ -16,10 +16,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
 
     private final List<String> roomList;
     private final Context context;
+    private final MainListeners mainListeners;
 
-    public MainAdapter(List<String> roomList, Context context){
+    public MainAdapter(List<String> roomList, Context context, MainListeners mainListeners){
         this.roomList = roomList;
         this.context = context;
+        this.mainListeners = mainListeners;
     }
 
     @NonNull
@@ -52,7 +54,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         }
 
         public void setData() {
-
+            binding.layoutMain.setOnClickListener(v -> {
+                mainListeners.onClick();
+            });
         }
+    }
+
+    public interface MainListeners {
+        void onClick();
     }
 }

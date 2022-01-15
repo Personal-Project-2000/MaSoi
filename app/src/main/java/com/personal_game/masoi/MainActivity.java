@@ -80,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.nav_create: {
-
+                        Intent intent = new Intent(getApplication(), WaitActivity.class);
+                        intent.putExtra("code", 1);
+                        startActivity(intent);
                         break;
                     }
                     case R.id.nav_signout: {
@@ -101,7 +103,14 @@ public class MainActivity extends AppCompatActivity {
             test.add("t");
         }
 
-        mainAdapter = new MainAdapter(test, getApplication());
+        mainAdapter = new MainAdapter(test, getApplication(), new MainAdapter.MainListeners() {
+            @Override
+            public void onClick() {
+                Intent intent = new Intent(getApplication(), WaitActivity.class);
+                intent.putExtra("code", 2);
+                startActivity(intent);
+            }
+        });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);

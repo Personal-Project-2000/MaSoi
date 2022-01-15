@@ -21,10 +21,12 @@ public class SettingDialog extends Dialog implements android.view.View.OnClickLi
     public Activity c;
     public Button save;
     private LayoutSettingBinding layoutSettingBinding;
+    private int code; //1: createRoom || 2: joinRoom
 
-    public SettingDialog(Activity a) {
+    public SettingDialog(Activity a, int code) {
         super(a);
         this.c = a;
+        this.code = code;
     }
 
     @Override
@@ -42,8 +44,23 @@ public class SettingDialog extends Dialog implements android.view.View.OnClickLi
     }
 
     private void init(){
-        setVoteTime();;
-        setAdvocateTime();
+        if(code == 2){
+            layoutSettingBinding.inputPass.setVisibility(View.INVISIBLE);
+            layoutSettingBinding.spinnerAdvocateTime.setVisibility(View.INVISIBLE);
+            layoutSettingBinding.spinnerVoteTime.setVisibility(View.INVISIBLE);
+            layoutSettingBinding.btnSave.setVisibility(View.INVISIBLE);
+
+            layoutSettingBinding.txtPass.setVisibility(View.VISIBLE);
+            layoutSettingBinding.txtAdvocateTime.setVisibility(View.VISIBLE);
+            layoutSettingBinding.txtVoteTime.setVisibility(View.VISIBLE);
+        }else{
+            layoutSettingBinding.txtPass.setVisibility(View.INVISIBLE);
+            layoutSettingBinding.txtAdvocateTime.setVisibility(View.INVISIBLE);
+            layoutSettingBinding.txtVoteTime.setVisibility(View.INVISIBLE);
+
+            setVoteTime();;
+            setAdvocateTime();
+        }
     }
 
     private void setVoteTime(){

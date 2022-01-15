@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.personal_game.masoi.adapter.MainAdapter;
@@ -29,6 +30,7 @@ public class WaitActivity extends AppCompatActivity {
 
     private ActivityWaitBinding activityWaitBinding;
     private PlayerAdapter playerAdapter;
+    private int code; //1: createRoom || 2: joinRoom
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,13 @@ public class WaitActivity extends AppCompatActivity {
     }
 
     private void init(){
+        Intent intent = getIntent();
+        code = intent.getIntExtra("code", 2);
+
+        if(code == 2) {
+            activityWaitBinding.btnReady.setText("Sẵn sàng");
+        }
+
         setListeners();
         setRoom();
     }
@@ -61,17 +70,26 @@ public class WaitActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_setting: {
-                        SettingDialog dialog = new SettingDialog(WaitActivity.this);
+                        SettingDialog dialog = new SettingDialog(WaitActivity.this, code);
 
                         dialog.show();
-                        dialog.getWindow().setLayout(700, 500);
+                        if(code == 1) {
+                            dialog.getWindow().setLayout(700, 500);
+                        }else{
+                            dialog.getWindow().setLayout(450, 330);
+                        }
                         break;
                     }
                     case R.id.nav_kick: {
-                        KickDialog dialog = new KickDialog(WaitActivity.this);
+                        if(code == 1) {
+                            KickDialog dialog = new KickDialog(WaitActivity.this);
 
-                        dialog.show();
-                        dialog.getWindow().setLayout(700, 1050);
+                            dialog.show();
+                            dialog.getWindow().setLayout(700, 1050);
+                        }
+                        else{
+                            Toast.makeText(getApplication(), "Chủ phòng mới sử dụng được chức năng này", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     }
                     case R.id.nav_signout: {

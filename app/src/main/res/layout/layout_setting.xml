@@ -6,8 +6,6 @@
     android:id="@+id/layoutMain"
     android:padding="10dp">
 
-
-
     <TextView
         android:id="@+id/txt1"
         android:layout_width="wrap_content"
@@ -16,6 +14,36 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/inputPass"
         android:text="Mật khẩu: "
+        android:gravity="center_vertical"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/txtPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/txt1"
+        app:layout_constraintLeft_toLeftOf="@id/txtVoteTime"
+        android:text="123456"
+        android:gravity="center_vertical"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txtVoteTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/txt2"
+        app:layout_constraintLeft_toLeftOf="@id/txtAdvocateTime"
+        android:text="5p"
+        android:gravity="center_vertical"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/txtAdvocateTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/txt3"
+        app:layout_constraintLeft_toRightOf="@id/txt3"
+        android:text="5p"
         android:gravity="center_vertical"
         android:textSize="15sp"/>
 
@@ -31,7 +59,6 @@
 
     <TextView
         android:id="@+id/txt2"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/spinnerVoteTime"
@@ -53,7 +80,6 @@
 
     <TextView
         android:id="@+id/txt3"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/spinnerAdvocateTime"
