@@ -6,4 +6,223 @@
     android:layout_height="match_parent"
     tools:context=".PlayActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp"
+        android:paddingTop="8sp"
+        android:paddingBottom="8sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/backback"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/imgGia"/>
+
+        <ImageView
+            android:id="@+id/imgGia"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_patriarch1"
+            android:background="@drawable/vien1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/btnBack"
+            app:layout_constraintRight_toLeftOf="@id/imgLove"/>
+
+        <ImageView
+            android:id="@+id/imgLove"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_love1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imgGia"
+            app:layout_constraintRight_toLeftOf="@id/imgSao"
+            android:background="@drawable/vien1"/>
+
+        <ImageView
+            android:id="@+id/imgSao"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_music1"
+            android:background="@drawable/vien1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imgLove"
+            app:layout_constraintRight_toLeftOf="@id/imgHelp"/>
+
+        <ImageView
+            android:id="@+id/imgHelp"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_potion_help"
+            android:background="@drawable/vien1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imgSao"
+            app:layout_constraintRight_toLeftOf="@id/imgDie"/>
+
+        <ImageView
+            android:id="@+id/imgDie"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_potion_die"
+            android:background="@drawable/vien1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imgHelp"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutMenu"
+        app:layout_constraintBottom_toTopOf="@id/layoutReady"
+        app:layout_constraintRight_toRightOf="@id/layoutMenu"
+        app:layout_constraintLeft_toLeftOf="@id/guideline"
+        android:orientation="vertical"
+        android:background="@drawable/vien">
+
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/goctron"
+            android:ellipsize="end"
+            android:focusableInTouchMode="true"
+            android:hint="Tên cần tìm kiếm"
+            android:textSize="13sp"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@id/rclPlayer"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_width="180dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/inputSearch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:layout_constraintBottom_toBottomOf="@id/layoutReady"
+        app:layout_constraintRight_toRightOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtCall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/vien"
+            android:gravity="center_horizontal"
+            android:text="Sói"
+            android:textSize="30sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imgBai"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toBottomOf="@id/txtCall"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/temp"/>
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center_horizontal"
+            android:text="Sói"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/imgBai"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtDes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/vien"
+            android:justificationMode="inter_word"
+            android:text="Nhiệm vụ của phe ma sói đó là giết hết dân làng hoặc giết để số dân làng bằng số lượng sói. Ban đêm, sói sẽ cùng nhau chọn con mồi và giết hắn. Ban ngày sói sẽ giả làm người, cố gắng biện hộ bản thân không phải sói và cố gắng thuyết phục mọi người giết những dân làng vô tội."
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/txtName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/layoutReady"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:layout_margin="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/guideline">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReady"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:text="Bỏ qua"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/black"
+            app:cornerRadius="8sp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
