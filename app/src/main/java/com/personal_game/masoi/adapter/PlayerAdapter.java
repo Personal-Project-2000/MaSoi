@@ -15,10 +15,12 @@ import java.util.List;
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder>{
     private final List<String> playerList;
     private final Context context;
+    private int code; // 1: storyActivity || 2: waitActivity
 
-    public PlayerAdapter(List<String> playerList, Context context){
+    public PlayerAdapter(List<String> playerList, Context context, int code){
         this.playerList = playerList;
         this.context = context;
+        this.code = code;
     }
 
     @NonNull
@@ -51,7 +53,15 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
         }
 
         public void setData() {
+            if(code == 2){
+                binding.layoutMain.getLayoutParams().height = 70;
 
+                binding.imgMain.getLayoutParams().height = 45;
+                binding.imgMain.getLayoutParams().width = 45;
+                binding.imgMain.requestLayout();
+
+                binding.txtName.setTextSize(11);
+            }
         }
     }
 }

@@ -4,6 +4,10 @@ public class SpinnerObject {
     private String spinnerItemName;
     private int spinnerItemImg;
 
+    public SpinnerObject(String spinnerItemName) {
+        this.spinnerItemName = spinnerItemName;
+    }
+
     public SpinnerObject(String spinnerItemName, int spinnerItemImg) {
         this.spinnerItemName = spinnerItemName;
         this.spinnerItemImg = spinnerItemImg;

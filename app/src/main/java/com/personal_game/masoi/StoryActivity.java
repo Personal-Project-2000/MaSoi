@@ -58,7 +58,7 @@ public class StoryActivity extends AppCompatActivity {
 
     private void setPlayer(){
 
-        playerAdapter = new PlayerAdapter(test, getApplication());
+        playerAdapter = new PlayerAdapter(test, getApplication(), 1);
 
         RecyclerView rcl = findViewById(R.id.rclPlayer);
         rcl.setAdapter(playerAdapter);
