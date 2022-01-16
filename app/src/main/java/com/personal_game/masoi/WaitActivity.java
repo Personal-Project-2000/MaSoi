@@ -1,30 +1,34 @@
 package com.personal_game.masoi;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.personal_game.masoi.adapter.MainAdapter;
 import com.personal_game.masoi.adapter.PlayerAdapter;
-import com.personal_game.masoi.databinding.ActivityMainBinding;
 import com.personal_game.masoi.databinding.ActivityWaitBinding;
-import com.personal_game.masoi.dialog.ExitDialog;
+import com.personal_game.masoi.dialog.ConfirmDialog;
 import com.personal_game.masoi.dialog.KickDialog;
 import com.personal_game.masoi.dialog.SettingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 public class WaitActivity extends AppCompatActivity {
 
@@ -93,13 +97,13 @@ public class WaitActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.nav_signout: {
-                        ExitDialog dialog = new ExitDialog(WaitActivity.this, new ExitDialog.ExitListeners() {
+                        ConfirmDialog dialog = new ConfirmDialog(WaitActivity.this, new ConfirmDialog.ExitListeners() {
                             @Override
                             public void onClickYes() {
                                 Intent intent = new Intent(WaitActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
-                        });
+                        }, "Bạn muốn rời khỏi phòng?");
 
                         dialog.show();
                         dialog.getWindow().setLayout(600, 250);
@@ -109,7 +113,38 @@ public class WaitActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        activityWaitBinding.btnReady.setOnClickListener(v -> {
+            Intent intent = new Intent(WaitActivity.this, PlayActivity.class);
+            startActivity(intent);
+        });
+
+        activityWaitBinding.imageViewMic.setOnClickListener(v -> {
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "hãy nói gì đi");
+            try {
+                activityResultLauncher.launch(intent);
+            } catch (Exception e) {
+                Toast.makeText(getApplication(), "Error",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                if (result.getData() != null) {
+                    ArrayList<String> data = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    activityWaitBinding.inputSearch.setText(Objects.requireNonNull(data).get(0));
+                } else {
+                    Toast.makeText(getApplication(),"Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    });
 
     private void setRoom(){
         List<String> test = new ArrayList<>();
@@ -118,7 +153,12 @@ public class WaitActivity extends AppCompatActivity {
             test.add("t");
         }
 
-        playerAdapter = new PlayerAdapter(test, getApplication(), 2);
+        playerAdapter = new PlayerAdapter(test, getApplication(), 2, new PlayerAdapter.PlayerListeners() {
+            @Override
+            public void onClick() {
+
+            }
+        });
         activityWaitBinding.rclPlayer.setAdapter(playerAdapter);
     }
 }

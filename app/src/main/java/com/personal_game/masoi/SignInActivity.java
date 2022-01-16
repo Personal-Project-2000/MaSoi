@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import com.personal_game.masoi.adapter.MainAdapter;
 import com.personal_game.masoi.databinding.ActivitySignInBinding;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,17 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void init(){
+        //kiểm tra ảnh có tồn tại không
+        Picasso.Builder builder = new Picasso.Builder(getApplicationContext());
+        builder.listener(new Picasso.Listener() {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                activitySignInBinding.imgLogo.setImageResource(R.drawable.logo);
+            }
+        });
+        Picasso pic = builder.build();
+        pic.load("https://ps.covid21tsp.space/Picture/hopot.png").into(activitySignInBinding.imgLogo);
+
         setListeners();
     }
 

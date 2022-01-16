@@ -60,7 +60,8 @@
                     app:layout_constraintRight_toRightOf="@id/imgMain"
                     app:layout_constraintLeft_toLeftOf="@id/imgMain"
                     android:layout_marginBottom="10dp"/>
-            </androidx.constraintlayout.widget.ConstraintLayout></androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"

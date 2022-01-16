@@ -15,12 +15,14 @@ import java.util.List;
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder>{
     private final List<String> playerList;
     private final Context context;
+    private PlayerListeners playerListeners;
     private int code; // 1: storyActivity || 2: waitActivity
 
-    public PlayerAdapter(List<String> playerList, Context context, int code){
+    public PlayerAdapter(List<String> playerList, Context context, int code, PlayerListeners playerListeners){
         this.playerList = playerList;
         this.context = context;
         this.code = code;
+        this.playerListeners = playerListeners;
     }
 
     @NonNull
@@ -56,12 +58,20 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             if(code == 2){
                 binding.layoutMain.getLayoutParams().height = 70;
 
-                binding.imgMain.getLayoutParams().height = 45;
-                binding.imgMain.getLayoutParams().width = 45;
+                binding.imgMain.getLayoutParams().height = 40;
+                binding.imgMain.getLayoutParams().width = 40;
                 binding.imgMain.requestLayout();
 
                 binding.txtName.setTextSize(11);
             }
+
+            binding.layoutMain.setOnClickListener(v -> {
+                playerListeners.onClick();
+            });
         }
+    }
+
+    public interface PlayerListeners {
+        void onClick();
     }
 }

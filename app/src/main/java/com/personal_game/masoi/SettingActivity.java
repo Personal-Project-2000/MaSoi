@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class SettingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private ActivitySettingBinding activitySettingBinding;
+    private boolean checkBack = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,16 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
         activitySettingBinding.btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(getApplication(), MainActivity.class);
             startActivity(intent);
+        });
+
+        activitySettingBinding.checkBack.setOnClickListener(v -> {
+            if(checkBack) {
+                checkBack = false;
+                activitySettingBinding.checkBack.setImageResource(R.drawable.off);
+            }else{
+                checkBack = true;
+                activitySettingBinding.checkBack.setImageResource(R.drawable.on);
+            }
         });
     }
 

@@ -18,7 +18,7 @@ import com.personal_game.masoi.databinding.LayoutSettingBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KickDialog extends Dialog implements android.view.View.OnClickListener{
+public class KickDialog extends Dialog{
     public Activity c;
     public Button save;
     private LayoutKickBinding layoutKickBinding;
@@ -60,15 +60,4 @@ public class KickDialog extends Dialog implements android.view.View.OnClickListe
         layoutKickBinding.rclPlayer.setAdapter(kickAdapter);
     }
 
-    @Override
-    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.btnSave:
-//                dismiss();
-//                break;
-//            default:
-//                break;
-//        }
-        dismiss();
-    }
 }

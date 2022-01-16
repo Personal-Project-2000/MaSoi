@@ -8,14 +8,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/vien">
 
-    <ImageView
-        android:id="@+id/imgMain"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/logo"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layoutImgMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/imgMain"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/logo"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/txtName"
@@ -26,7 +34,7 @@
         android:gravity="center_vertical"
         android:textSize="15sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/imgMain"
+        app:layout_constraintLeft_toRightOf="@id/layoutImgMain"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
