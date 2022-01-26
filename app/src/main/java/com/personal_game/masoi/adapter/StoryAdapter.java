@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.personal_game.masoi.databinding.ItemPlayerBinding;
 import com.personal_game.masoi.databinding.ItemStoryBinding;
+import com.personal_game.masoi.object.StoryObject;
 
 import java.util.List;
 
 public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
-    private final List<String> storyList;
+    private final List<StoryObject> storyList;
     private final Context context;
 
-    public StoryAdapter(List<String> storyList, Context context){
+    public StoryAdapter(List<StoryObject> storyList, Context context){
         this.storyList = storyList;
         this.context = context;
     }
@@ -33,7 +34,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull StoryAdapter.ViewHolder holder, int position) {
-        holder.setData();
+        holder.setData(storyList.get(position));
     }
 
     @Override
@@ -50,8 +51,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
             this.binding = binding;
         }
 
-        public void setData() {
-
+        public void setData(StoryObject storyObject) {
+            binding.txtContent.setText(storyObject.getContent());
         }
     }
 }

@@ -9,20 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.personal_game.masoi.R;
-import com.personal_game.masoi.databinding.ItemMainBinding;
 import com.personal_game.masoi.databinding.ItemPlayerBinding;
 import com.personal_game.masoi.object.PlayerObject;
+import com.personal_game.masoi.object.PlayerObject1;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder>{
-    private final List<PlayerObject> playerList;
+public class PlayerAdapter1 extends RecyclerView.Adapter<PlayerAdapter1.ViewHolder>{
+    private final List<PlayerObject1> playerList;
     private final Context context;
     private PlayerListeners playerListeners;
     private int code; // 1: storyActivity || 2: waitActivity
 
-    public PlayerAdapter(List<PlayerObject> playerList, Context context, int code, PlayerListeners playerListeners){
+    public PlayerAdapter1(List<PlayerObject1> playerList, Context context, int code, PlayerListeners playerListeners){
         this.playerList = playerList;
         this.context = context;
         this.code = code;
@@ -31,8 +31,8 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
 
     @NonNull
     @Override
-    public PlayerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PlayerAdapter.ViewHolder(ItemPlayerBinding.inflate(
+    public PlayerAdapter1.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new PlayerAdapter1.ViewHolder(ItemPlayerBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
@@ -40,7 +40,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlayerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlayerAdapter1.ViewHolder holder, int position) {
         holder.setData(playerList.get(position));
     }
 
@@ -58,7 +58,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
             this.binding = binding;
         }
 
-        public void setData(PlayerObject playerObject) {
+        public void setData(PlayerObject1 playerObject) {
             if(playerObject.getImg() != null){
                 Picasso.Builder builder = new Picasso.Builder(context);
                 builder.listener(new Picasso.Listener() {
@@ -81,6 +81,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
                 binding.imgMain.requestLayout();
 
                 binding.txtName.setTextSize(11);
+            }
+
+            if(playerObject.isStatus()){
+                binding.layoutMain.setBackgroundResource(R.drawable.vien_vang);
+            }else{
+                binding.layoutMain.setBackgroundResource(R.drawable.vien);
             }
 
             binding.layoutMain.setOnClickListener(v -> {

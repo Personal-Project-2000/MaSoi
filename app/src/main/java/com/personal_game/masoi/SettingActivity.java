@@ -7,13 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.personal_game.masoi.Object.SpinnerObject;
+import com.personal_game.masoi.object.SpinnerObject;
 import com.personal_game.masoi.adapter.SpinnerAdapter;
-import com.personal_game.masoi.databinding.ActivityHistoryBinding;
 import com.personal_game.masoi.databinding.ActivitySettingBinding;
 
 import java.util.ArrayList;
@@ -43,8 +40,7 @@ public class SettingActivity extends AppCompatActivity implements AdapterView.On
 
     private void setListeners(){
         activitySettingBinding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplication(), MainActivity.class);
-            startActivity(intent);
+            finish();
         });
 
         activitySettingBinding.checkBack.setOnClickListener(v -> {

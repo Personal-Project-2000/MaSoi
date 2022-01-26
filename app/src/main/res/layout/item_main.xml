@@ -7,6 +7,7 @@
     android:background="@drawable/vien">
 
     <ImageView
+        android:id="@+id/imgPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -28,6 +29,7 @@
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <TextView
+        android:id="@+id/txtQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"

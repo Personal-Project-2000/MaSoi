@@ -1,4 +1,4 @@
-package com.personal_game.masoi.Object;
+package com.personal_game.masoi.object;
 
 public class SpinnerObject {
     private String spinnerItemName;

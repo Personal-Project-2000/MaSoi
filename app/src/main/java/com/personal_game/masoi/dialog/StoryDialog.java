@@ -15,6 +15,8 @@ import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.StoryAdapter;
 import com.personal_game.masoi.databinding.LayoutConfirmBinding;
 import com.personal_game.masoi.databinding.LayoutStoryBinding;
+import com.personal_game.masoi.object.PlayerObject;
+import com.personal_game.masoi.object.StoryObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +57,9 @@ public class StoryDialog extends Dialog {
     }
 
     private void setStory(){
-        List<String> test = new ArrayList<>();
+        List<StoryObject> storyList = new ArrayList<>();
 
-        for(int i = 0; i < 20; i++){
-            test.add("t");
-        }
-
-        storyAdapter = new StoryAdapter(test, c);
+        storyAdapter = new StoryAdapter(storyList, c);
         layoutStoryBinding.rclStory.setAdapter(storyAdapter);
     }
 

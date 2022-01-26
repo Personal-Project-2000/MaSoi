@@ -9,6 +9,7 @@ import android.view.Window;
 import com.personal_game.masoi.adapter.PlayerAdapter;
 import com.personal_game.masoi.databinding.LayoutAdvocateBinding;
 import com.personal_game.masoi.databinding.LayoutVoteBinding;
+import com.personal_game.masoi.object.PlayerObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +43,9 @@ public class AdvocateDialog extends Dialog {
     }
 
     private void setPlayer(){
-        List<String> test = new ArrayList<>();
+        List<PlayerObject> playerList = new ArrayList<>();
 
-        for(int i = 0; i < 20; i++){
-            test.add("t");
-        }
-
-        playerAdapter = new PlayerAdapter(test, c, 1, new PlayerAdapter.PlayerListeners() {
+        playerAdapter = new PlayerAdapter(playerList, c, 1, new PlayerAdapter.PlayerListeners() {
             @Override
             public void onClick() {
 

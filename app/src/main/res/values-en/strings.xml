@@ -9,4 +9,7 @@
     <string name="txt1">Or login with</string>
     <string name="txt2">Do not have an account?</string>
     <string name="txt3">Registration</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="choose_file">Choose File</string>
 </resources>

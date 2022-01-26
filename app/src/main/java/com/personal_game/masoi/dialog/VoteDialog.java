@@ -15,7 +15,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.personal_game.masoi.adapter.PlayerAdapter;
+import com.personal_game.masoi.adapter.PlayerAdapter1;
 import com.personal_game.masoi.databinding.LayoutVoteBinding;
+import com.personal_game.masoi.object.PlayerObject;
+import com.personal_game.masoi.object.PlayerObject1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +28,16 @@ public class VoteDialog extends Dialog{
     public Activity c;
     private int code; //1: Bầu cử tộc trưởng || 2: Chỉ định sói
     private LayoutVoteBinding layoutVoteBinding;
-    private PlayerAdapter playerAdapter;
+    private PlayerAdapter1 playerAdapter;
     private String title;
+    private List<PlayerObject1> playerList;
 
-    public VoteDialog(Activity a, int code, String title) {
+    public VoteDialog(Activity a, int code, String title, List<PlayerObject1> playerList) {
         super(a);
         this.c = a;
         this.code = code;
         this.title = title;
+        this.playerList = playerList;
     }
 
     @Override
@@ -58,13 +63,7 @@ public class VoteDialog extends Dialog{
     }
 
     private void setPlayer(){
-        List<String> test = new ArrayList<>();
-
-        for(int i = 0; i < 20; i++){
-            test.add("t");
-        }
-
-        playerAdapter = new PlayerAdapter(test, c, 1, new PlayerAdapter.PlayerListeners() {
+        playerAdapter = new PlayerAdapter1(playerList, c, 1, new PlayerAdapter1.PlayerListeners() {
             @Override
             public void onClick() {
                 ConfirmDialog dialog = new ConfirmDialog(c, new ConfirmDialog.ExitListeners() {

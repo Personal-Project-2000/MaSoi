@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.personal_game.masoi.databinding.ItemHistoryBinding;
 import com.personal_game.masoi.databinding.ItemMainBinding;
+import com.personal_game.masoi.object.HistoryObject;
 
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
-    private final List<String> historyList;
+    private final List<HistoryObject> historyList;
     private final HistoryListeners historyListeners;
     private final Context context;
 
-    public HistoryAdapter(List<String> historyList, Context context, HistoryListeners historyListeners){
+    public HistoryAdapter(List<HistoryObject> historyList, Context context, HistoryListeners historyListeners){
         this.historyList = historyList;
         this.historyListeners = historyListeners;
         this.context = context;
@@ -35,7 +36,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull HistoryAdapter.ViewHolder holder, int position) {
-        holder.setData();
+        holder.setData(historyList.get(position));
     }
 
     @Override
@@ -52,14 +53,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             this.binding = binding;
         }
 
-        public void setData() {
+        public void setData(HistoryObject historyObject) {
+            binding.txtTimeStart.setText(historyObject.getStartTime());
+            binding.txtQuantity.setText("Số lượng: "+historyObject.getSl());
+
             binding.layoutMain.setOnClickListener(v -> {
-                historyListeners.onClick("hihi");
+                historyListeners.onClick(historyObject);
             });
         }
     }
 
     public interface HistoryListeners {
-        void onClick(String str);
+        void onClick(HistoryObject historyObject);
     }
 }

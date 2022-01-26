@@ -10,4 +10,5 @@
     <string name="txt3">Đăng ký ngay</string>
     <string name="open">mở</string>
     <string name="close">đóng</string>
+    <string name="choose_file">Choose File</string>
 </resources>

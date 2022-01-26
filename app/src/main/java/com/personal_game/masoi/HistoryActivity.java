@@ -1,5 +1,7 @@
 package com.personal_game.masoi;
 
+import static com.personal_game.masoi.api.RetrofitServer.getRetrofit_lib;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -24,18 +26,28 @@ import com.google.android.material.navigation.NavigationView;
 import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.MainAdapter;
 import com.personal_game.masoi.adapter.StoryAdapter;
+import com.personal_game.masoi.api.ServiceAPI_lib;
 import com.personal_game.masoi.databinding.ActivityHistoryBinding;
 import com.personal_game.masoi.databinding.ActivityMainBinding;
+import com.personal_game.masoi.object.HistoryObject;
+import com.personal_game.masoi.object.Message_History;
+import com.personal_game.masoi.object.UserObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HistoryActivity extends AppCompatActivity {
 
     private HistoryAdapter historyAdapter;
     private ActivityHistoryBinding activityHistoryBinding;
+    private UserObject user;
+    private List<HistoryObject> historyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +63,15 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void init(){
+        user = (UserObject) getIntent().getSerializableExtra("user");
+
         setListeners();
         setHistory();
     }
 
     private void setListeners(){
         activityHistoryBinding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplication(), MainActivity.class);
-            startActivity(intent);
+            finish();
         });
 
         activityHistoryBinding.imageViewMic.setOnClickListener(v -> {
@@ -89,20 +102,31 @@ public class HistoryActivity extends AppCompatActivity {
     });
 
     private void setHistory(){
-        List<String> test = new ArrayList<>();
-
-        for(int i = 0; i < 20; i++){
-            test.add("t");
-        }
-
-        historyAdapter = new HistoryAdapter(test, getApplication(), new HistoryAdapter.HistoryListeners() {
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<Message_History> call = serviceAPI_lib.GetHistory(user.getTk());
+        call.enqueue(new Callback<Message_History>() {
             @Override
-            public void onClick(String str) {
-                Intent intent = new Intent(getApplication(), StoryActivity.class);
-                startActivity(intent);
+            public void onResponse(Call<Message_History> call, Response<Message_History> response) {
+                if(response.body().getStatus1() == 1 && response.body().getHistoryLists1() != null){
+                    historyList = response.body().getHistoryLists1();
+
+                    historyAdapter = new HistoryAdapter(historyList, getApplication(), new HistoryAdapter.HistoryListeners() {
+                        @Override
+                        public void onClick(HistoryObject historyObject) {
+                            Intent intent = new Intent(getApplication(), StoryActivity.class);
+                            intent.putExtra("history", historyObject);
+                            startActivityForResult(intent, 1);
+                        }
+                    });
+
+                    activityHistoryBinding.rclHistory.setAdapter(historyAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message_History> call, Throwable t) {
+
             }
         });
-
-        activityHistoryBinding.rclHistory.setAdapter(historyAdapter);
     }
 }

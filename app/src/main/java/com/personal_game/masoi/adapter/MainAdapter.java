@@ -8,17 +8,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.personal_game.masoi.R;
 import com.personal_game.masoi.databinding.ItemMainBinding;
+import com.personal_game.masoi.object.RoomObject;
 
 import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
 
-    private final List<String> roomList;
+    private final List<RoomObject> roomList;
     private final Context context;
     private final MainListeners mainListeners;
 
-    public MainAdapter(List<String> roomList, Context context, MainListeners mainListeners){
+    public MainAdapter(List<RoomObject> roomList, Context context, MainListeners mainListeners){
         this.roomList = roomList;
         this.context = context;
         this.mainListeners = mainListeners;
@@ -36,7 +38,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setData();
+        holder.setData(roomList.get(position));
     }
 
     @Override
@@ -53,14 +55,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
             this.binding = binding;
         }
 
-        public void setData() {
+        public void setData(RoomObject roomObject) {
+            if(roomObject.getPass().equals("")){
+                binding.imgPass.setImageResource(R.drawable.unlock);
+            }else{
+                binding.imgPass.setImageResource(R.drawable.ic_baseline_lock_24);
+            }
+
+            binding.txtCode.setText(roomObject.getNumber());
+            binding.txtQuantity.setText("Số lượng: "+roomObject.getSl());
+
             binding.layoutMain.setOnClickListener(v -> {
-                mainListeners.onClick();
+                if(roomObject.getPass().equals(""))
+                    mainListeners.onClickUnLock(roomObject);
+                else
+                    mainListeners.onClickLock(roomObject);
             });
         }
     }
 
     public interface MainListeners {
-        void onClick();
+        void onClickLock(RoomObject roomObject);
+        void onClickUnLock(RoomObject roomObject);
     }
 }

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.personal_game.masoi.Object.SpinnerObject;
+import com.personal_game.masoi.object.SpinnerObject;
 import com.personal_game.masoi.R;
 
 import java.util.ArrayList;

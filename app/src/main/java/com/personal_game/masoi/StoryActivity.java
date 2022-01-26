@@ -1,5 +1,7 @@
 package com.personal_game.masoi;
 
+import static com.personal_game.masoi.api.RetrofitServer.getRetrofit_lib;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -19,19 +21,30 @@ import android.widget.Toast;
 import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.PlayerAdapter;
 import com.personal_game.masoi.adapter.StoryAdapter;
+import com.personal_game.masoi.api.ServiceAPI_lib;
 import com.personal_game.masoi.databinding.ActivityHistoryBinding;
 import com.personal_game.masoi.databinding.ActivityStoryBinding;
+import com.personal_game.masoi.object.HistoryObject;
+import com.personal_game.masoi.object.Message_Story;
+import com.personal_game.masoi.object.PlayerObject;
+import com.personal_game.masoi.object.StoryObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class StoryActivity extends AppCompatActivity {
 
     private PlayerAdapter playerAdapter;
     private StoryAdapter storyAdapter;
     private ActivityStoryBinding activityStoryBinding;
-    private List<String> test;
+    private List<PlayerObject> playerList;
+    private List<StoryObject> storyList;
+    private HistoryObject history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +60,7 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     private void init(){
-        test = new ArrayList<>();
-
-        for(int i = 0; i < 20; i++){
-            test.add("t");
-        }
+        history = (HistoryObject) getIntent().getSerializableExtra("history");
 
         Uri uri = getIntent().getData();
         if (uri != null) {
@@ -60,15 +69,43 @@ public class StoryActivity extends AppCompatActivity {
             //GetReviewById(parameter[5]);
         }
 
+        loadStory();
         setListeners();
-        setPlayer();
-        setStory();
+    }
+
+    private void loadStory(){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<Message_Story> call = serviceAPI_lib.GetStory(history.getHistoryId());
+        call.enqueue(new Callback<Message_Story>() {
+            @Override
+            public void onResponse(Call<Message_Story> call, Response<Message_Story> response) {
+                if(response.body().getStatus1() == 1 && response.body().getStories1() != null){
+                    storyList = response.body().getStories1();
+                    playerList = response.body().getPlayers1();
+
+                    activityStoryBinding.txtTime.setText("Thời gian: "+history.getStartTime());
+                    activityStoryBinding.txtQuantity.setText("Số lượng: "+ history.getSl());
+                    if(history.isWin())
+                        activityStoryBinding.txtResult.setText("Chiến Thắng");
+                    else
+                        activityStoryBinding.txtResult.setText("Thua cuộc");
+                    activityStoryBinding.txtRangeTime.setText("Thời gian diễn ra: "+history.getTime()+"p");
+
+                    setPlayer();
+                    setStory();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message_Story> call, Throwable t) {
+
+            }
+        });
     }
 
     private void setListeners(){
         activityStoryBinding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplication(), HistoryActivity.class);
-            startActivity(intent);
+           finish();
         });
 
         activityStoryBinding.btnShare.setOnClickListener(v -> {
@@ -87,22 +124,25 @@ public class StoryActivity extends AppCompatActivity {
     }
 
     private void setPlayer(){
+        if(playerList != null) {
+            playerAdapter = new PlayerAdapter(playerList, getApplication(), 1, new PlayerAdapter.PlayerListeners() {
+                @Override
+                public void onClick() {
 
-        playerAdapter = new PlayerAdapter(test, getApplication(), 1, new PlayerAdapter.PlayerListeners() {
-            @Override
-            public void onClick() {
+                }
+            });
 
-            }
-        });
-
-        RecyclerView rcl = findViewById(R.id.rclPlayer);
-        rcl.setAdapter(playerAdapter);
+            RecyclerView rcl = findViewById(R.id.rclPlayer);
+            rcl.setAdapter(playerAdapter);
+        }
     }
 
     private void setStory(){
-        storyAdapter = new StoryAdapter(test, getApplication());
+        if(storyList != null) {
+            storyAdapter = new StoryAdapter(storyList, getApplication());
 
-        RecyclerView rcl1 = findViewById(R.id.rclStory);
-        rcl1.setAdapter(storyAdapter);
+            RecyclerView rcl1 = findViewById(R.id.rclStory);
+            rcl1.setAdapter(storyAdapter);
+        }
     }
 }
