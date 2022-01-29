@@ -10,6 +10,18 @@ public class RoomObject implements Serializable {
     private int advocateTime;
     private int sl;
     private boolean format;
+    private boolean status;
+
+    public RoomObject(String id) {
+        this.id = id;
+    }
+
+    public RoomObject(String id, String number, String pass, int sl) {
+        this.id = id;
+        this.number = number;
+        this.pass = pass;
+        this.sl = sl;
+    }
 
     public RoomObject(String id, String pass, int voteTime, int advocateTime, boolean format) {
         this.id = id;
@@ -75,7 +87,15 @@ public class RoomObject implements Serializable {
         this.format = format;
     }
 
-    public RoomObject(String id, String number, String pass, int voteTime, int advocateTime, int sl, boolean format) {
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public RoomObject(String id, String number, String pass, int voteTime, int advocateTime, int sl, boolean format, boolean status) {
         this.id = id;
         this.number = number;
         this.pass = pass;
@@ -83,5 +103,6 @@ public class RoomObject implements Serializable {
         this.advocateTime = advocateTime;
         this.sl = sl;
         this.format = format;
+        this.status = status;
     }
 }

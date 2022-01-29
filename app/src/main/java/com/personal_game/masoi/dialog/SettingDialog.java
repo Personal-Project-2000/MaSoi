@@ -18,9 +18,13 @@ import com.personal_game.masoi.object.SpinnerObject;
 import com.personal_game.masoi.R;
 import com.personal_game.masoi.adapter.SpinnerAdapter;
 import com.personal_game.masoi.databinding.LayoutSettingBinding;
+import com.personal_game.masoi.socket.SetupSocket;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,6 +82,7 @@ public class SettingDialog extends Dialog{
         }
 
         setListeners();
+        socket();
     }
 
     private void setListeners(){
@@ -98,6 +103,10 @@ public class SettingDialog extends Dialog{
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if(response.body().getStatus1() == 1){
+                    SetupSocket.setting(room.getId(), layoutSettingBinding.inputPass.getText()+"",
+                            Integer.parseInt(layoutSettingBinding.spinnerVoteTime.getText()+""),
+                            Integer.parseInt(layoutSettingBinding.spinnerAdvocateTime.getText()+""));
+
                     room.setPass(layoutSettingBinding.inputPass.getText()+"");
                     room.setAdvocateTime(Integer.parseInt(layoutSettingBinding.spinnerAdvocateTime.getText()+""));
                     room.setVoteTime(Integer.parseInt(layoutSettingBinding.spinnerVoteTime.getText()+""));
@@ -113,4 +122,55 @@ public class SettingDialog extends Dialog{
             }
         });
     }
+
+    private void socket(){
+        SetupSocket.mSocket.on("S_settingroom", settingRoom);
+        SetupSocket.mSocket.on("S_bossout", bossOut);
+    }
+
+    private final Emitter.Listener settingRoom = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            c.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String pass = data.optString("pass");
+                    String voteTime = data.optString("voteTime");
+                    String advocateTime = data.optString("advocateTime");
+
+                    if(room != null){
+                        layoutSettingBinding.txtPass.setText(pass);
+                        layoutSettingBinding.txtAdvocateTime.setText(advocateTime+" phút");
+                        layoutSettingBinding.txtVoteTime.setText(voteTime+" phút");
+                    }
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener bossOut = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            c.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    layoutSettingBinding.inputPass.setVisibility(View.VISIBLE);
+                    layoutSettingBinding.spinnerAdvocateTime.setVisibility(View.VISIBLE);
+                    layoutSettingBinding.spinnerVoteTime.setVisibility(View.VISIBLE);
+                    layoutSettingBinding.btnSave.setVisibility(View.VISIBLE);
+                    layoutSettingBinding.txt5.setVisibility(View.VISIBLE);
+                    layoutSettingBinding.txt6.setVisibility(View.VISIBLE);
+
+                    layoutSettingBinding.txtPass.setVisibility(View.INVISIBLE);
+                    layoutSettingBinding.txtAdvocateTime.setVisibility(View.INVISIBLE);
+                    layoutSettingBinding.txtVoteTime.setVisibility(View.INVISIBLE);
+
+                    layoutSettingBinding.inputPass.setText(layoutSettingBinding.txtPass.getText()+"");
+                    layoutSettingBinding.spinnerAdvocateTime.setText(layoutSettingBinding.txtAdvocateTime.getText()+"");
+                    layoutSettingBinding.spinnerVoteTime.setText(layoutSettingBinding.txtVoteTime.getText()+"");
+                }
+            });
+        }
+    };
 }

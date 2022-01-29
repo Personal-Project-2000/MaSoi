@@ -50,6 +50,10 @@ public class PlayerObject1 implements Serializable {
         this.status = status;
     }
 
+    public PlayerObject1(String tk) {
+        this.tk = tk;
+    }
+
     public PlayerObject1(String tk, String name, String img, boolean boss, boolean status) {
         this.tk = tk;
         this.name = name;

@@ -1,6 +1,7 @@
 package com.personal_game.masoi.api;
 
 import com.personal_game.masoi.object.Message;
+import com.personal_game.masoi.object.Message_BaiInfo;
 import com.personal_game.masoi.object.Message_History;
 import com.personal_game.masoi.object.Message_Info;
 import com.personal_game.masoi.object.Message_RoomDetail;
@@ -49,6 +50,9 @@ public interface ServiceAPI_lib {
     @POST("UpdateInfo_Post")
     Call<Message> UpInfo(@Query("Tk") String Tk, @Query("Name") String Name);
 
+    @GET("CheckRoom_Get")
+    Call<Message_RoomDetail> CheckRoom(@Query("Tk") String Tk);
+
     //-----------------------------------------------History--------------------------------------------------------
 
     @GET("HistoryList_Get")
@@ -82,4 +86,9 @@ public interface ServiceAPI_lib {
 
     @POST("UpdateRoom_Post")
     Call<Message> Setting(@Body RoomObject room);
+
+    //-----------------------------------------------Bài--------------------------------------------------------
+
+    @GET("Bai_Get")
+    Call<Message_BaiInfo> BaiInfo(@Query("baiId") String baiId);
 }

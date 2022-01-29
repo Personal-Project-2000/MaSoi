@@ -16,6 +16,8 @@ import com.personal_game.masoi.databinding.LayoutKickBinding;
 import com.personal_game.masoi.object.Message;
 import com.personal_game.masoi.object.PlayerObject;
 import com.personal_game.masoi.object.PlayerObject1;
+import com.personal_game.masoi.socket.SetupSocket;
+import com.personal_game.masoi.socket.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +79,8 @@ public class KickDialog extends Dialog{
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if(response.body().getStatus1() == 1){
+                    SetupSocket.exitRoom(Tk, roomId, 2);
+
                     kickListeners.OnClick(position);
                     playerList.remove(position);
                     kickAdapter.notifyItemRemoved(position);

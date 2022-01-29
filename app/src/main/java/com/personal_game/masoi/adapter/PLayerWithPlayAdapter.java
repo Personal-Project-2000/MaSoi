@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,17 +13,20 @@ import com.personal_game.masoi.R;
 import com.personal_game.masoi.databinding.ItemPlayerBinding;
 import com.personal_game.masoi.databinding.ItemPlayerwithplayBinding;
 import com.personal_game.masoi.object.PlayerObject1;
+import com.personal_game.masoi.object.PlayerObject2;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class PLayerWithPlayAdapter extends RecyclerView.Adapter<PLayerWithPlayAdapter.ViewHolder>{
-    private final List<PlayerObject1> playerList;
+    private final List<PlayerObject2> playerList;
     private final Context context;
+    private final PlayerListeners playerListeners;
 
-    public PLayerWithPlayAdapter(List<PlayerObject1> playerList, Context context){
+    public PLayerWithPlayAdapter(List<PlayerObject2> playerList, Context context, PlayerListeners playerListeners){
         this.playerList = playerList;
         this.context = context;
+        this.playerListeners = playerListeners;
     }
 
     @NonNull
@@ -54,7 +58,7 @@ public class PLayerWithPlayAdapter extends RecyclerView.Adapter<PLayerWithPlayAd
             this.binding = binding;
         }
 
-        public void setData(PlayerObject1 player) {
+        public void setData(PlayerObject2 player) {
             if(player.getImg() != null){
                 Picasso.Builder builder = new Picasso.Builder(context);
                 builder.listener(new Picasso.Listener() {
@@ -68,6 +72,42 @@ public class PLayerWithPlayAdapter extends RecyclerView.Adapter<PLayerWithPlayAd
             }
 
             binding.txtName.setText(player.getName());
+
+            if(player.isDie()){
+                binding.layoutMain.setBackgroundResource(R.color.gray);
+            }else{
+                binding.layoutMain.setBackgroundResource(R.color.white);
+            }
+
+            if(player.isHypnosis()){
+                binding.imgSao.setImageResource(R.drawable.ic_music1);
+            }else{
+                binding.imgSao.setImageResource(R.drawable.ic_music);
+            }
+
+            if(player.isLove()){
+                binding.imgLove.setImageResource(R.drawable.ic_love1);
+            }else{
+                binding.imgLove.setImageResource(R.drawable.ic_love);
+            }
+
+            if(player.isPatriarch()){
+                binding.imgGia.setImageResource(R.drawable.ic_patriarch1);
+            }else {
+                binding.imgGia.setImageResource(R.drawable.ic_patriarch);
+            }
+
+            binding.layoutMain.setOnClickListener(v -> {
+                if(player.isDie()){
+                    Toast.makeText(context, "Người này đã chết", Toast.LENGTH_SHORT).show();
+                }else {
+                    playerListeners.onClick(player);
+                }
+            });
         }
+    }
+
+    public interface PlayerListeners{
+        void onClick(PlayerObject2 player);
     }
 }

@@ -56,7 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
         }
 
         public void setData(RoomObject roomObject) {
-            if(roomObject.getPass().equals("")){
+            if(roomObject.getPass().trim().equals("")){
                 binding.imgPass.setImageResource(R.drawable.unlock);
             }else{
                 binding.imgPass.setImageResource(R.drawable.ic_baseline_lock_24);
@@ -66,7 +66,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>{
             binding.txtQuantity.setText("Số lượng: "+roomObject.getSl());
 
             binding.layoutMain.setOnClickListener(v -> {
-                if(roomObject.getPass().equals(""))
+                if(roomObject.getPass().trim().equals(""))
                     mainListeners.onClickUnLock(roomObject);
                 else
                     mainListeners.onClickLock(roomObject);

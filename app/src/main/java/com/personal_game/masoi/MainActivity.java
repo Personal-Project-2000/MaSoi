@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.personal_game.masoi.adapter.HistoryAdapter;
 import com.personal_game.masoi.adapter.MainAdapter;
+import com.personal_game.masoi.adapter.PlayerAdapter1;
 import com.personal_game.masoi.api.ServiceAPI_lib;
 import com.personal_game.masoi.databinding.ActivityMainBinding;
 import com.personal_game.masoi.databinding.ActivitySignInBinding;
@@ -41,17 +42,24 @@ import com.personal_game.masoi.dialog.ConfirmDialog;
 import com.personal_game.masoi.dialog.PassRoomDialog;
 import com.personal_game.masoi.object.Message;
 import com.personal_game.masoi.object.Message_Info;
+import com.personal_game.masoi.object.Message_RoomDetail;
 import com.personal_game.masoi.object.Message_RoomList;
+import com.personal_game.masoi.object.PlayerObject1;
 import com.personal_game.masoi.object.Request_JoinRoom;
 import com.personal_game.masoi.object.RoomObject;
 import com.personal_game.masoi.object.UserObject;
+import com.personal_game.masoi.socket.SetupSocket;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         Info();
         setListeners();
         setRoom();
+        socket();
     }
 
     private void setListeners(){
@@ -127,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.nav_signout: {
+                        SetupSocket.signOut();
+
                         Intent intent = new Intent(getApplication(), SignInActivity.class);
                         startActivity(intent);
                         break;
@@ -178,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                             PassRoomDialog dialog = new PassRoomDialog(MainActivity.this, new PassRoomDialog.JoinListeners() {
                                 @Override
                                 public void onClick(String pass) {
-                                    JoinRoom(roomObject.getId(), pass);
+                                    JoinRoom(roomObject, pass);
                                 }
                             });
 
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onClickUnLock(RoomObject roomObject) {
-                            JoinRoom(roomObject.getId(), "");
+                            JoinRoom(roomObject, "");
                         }
                     });
 
@@ -258,11 +269,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if(response.body().getStatus1() == 1){
-                    Intent intent = new Intent(getApplication(), WaitActivity.class);
-                    intent.putExtra("code", 1);
-                    intent.putExtra("roomId", response.body().getId1());
-                    intent.putExtra("Tk", Tk);
-                    startActivityForResult(intent, 5);
+                    GetRoom(response.body().getId1(), 1, 5);
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification1(), Toast.LENGTH_SHORT).show();
                 }
@@ -275,18 +282,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void JoinRoom(String roomId, String pass){
+    private void JoinRoom(RoomObject room, String pass){
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<Message> call = serviceAPI_lib.JoinRoom(new Request_JoinRoom(roomId, Tk, pass));
+        Call<Message> call = serviceAPI_lib.JoinRoom(new Request_JoinRoom(room.getId(), Tk, pass));
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
                 if(response.body().getStatus1() == 1){
-                    Intent intent = new Intent(getApplication(), WaitActivity.class);
-                    intent.putExtra("code", 2);
-                    intent.putExtra("roomId", roomId);
-                    intent.putExtra("Tk", Tk);
-                    startActivityForResult(intent, 6);
+                    SetupSocket.joinRoom(Tk, room.getId(), room.getNumber(), user.getFullName(), user.getImg());
+
+                    GetRoom(room.getId(), 2, 6);
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification1(), Toast.LENGTH_SHORT).show();
                 }
@@ -298,4 +303,167 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //requestCode => 5: gửi thông điệp tạo phòng
+    private void GetRoom(String roomId, int code, int requestCode){
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<Message_RoomDetail> call = serviceAPI_lib.GetRoom(roomId);
+        call.enqueue(new Callback<Message_RoomDetail>() {
+            @Override
+            public void onResponse(Call<Message_RoomDetail> call, Response<Message_RoomDetail> response) {
+                if(response.body().getStatus1() == 1 && response.body().getPlayers1() != null){
+                    if(requestCode == 5){
+                        SetupSocket.createRoom(Tk, response.body().getRoomInfo1().getId(), response.body().getRoomInfo1().getNumber());
+                    }
+
+                    List<PlayerObject1> playerList = response.body().getPlayers1();
+                    PlayerObject1 player =playerList.get(takePosition(playerList, Tk));
+
+                    Intent intent = new Intent(getApplication(), WaitActivity.class);
+                    intent.putExtra("code", code);
+                    intent.putExtra("playerList", (Serializable) response.body().getPlayers1());
+                    intent.putExtra("room", response.body().getRoomInfo1());
+                    intent.putExtra("mine", player);
+                    intent.putExtra("Tk", Tk);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message_RoomDetail> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private int takePosition(List<PlayerObject1> playerList, String Tk){
+        for (int i = 0; i < playerList.size(); i ++) {
+            if(playerList.get(i).getTk().equals(Tk) ){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private int takePositionRoom(String roomId){
+        for (int i = 0; i < roomList.size(); i ++) {
+            if(roomList.get(i).getId().equals(roomId) ){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private void socket(){
+        SetupSocket.mSocket.on("S_joinroom1", joinRoom);
+        SetupSocket.mSocket.on("S_exitroom1", exitRoom);
+        SetupSocket.mSocket.on("S_createroom", createRoom);
+        SetupSocket.mSocket.on("S_settingroom1", settingRoom);
+        SetupSocket.mSocket.on("S_startRoom1", start);
+    }
+
+    private final Emitter.Listener joinRoom = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String roomId = data.optString("roomId");
+                    int quantity = data.optInt("quantity");
+
+                    int position = takePositionRoom(roomId);
+
+                    if(roomList.size() > 0) {
+                        roomList.get(position).setSl(quantity);
+                        mainAdapter.notifyItemChanged(position);
+                    }
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener exitRoom = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String roomId = data.optString("roomId");
+                    int quantity = data.optInt("quantity");
+
+                    int position = takePositionRoom(roomId);
+
+                    if(roomList.size() > 0) {
+                        roomList.get(position).setSl(quantity);
+                        mainAdapter.notifyItemChanged(position);
+
+                        if(quantity == 0){
+                            roomList.remove(position);
+                            mainAdapter.notifyItemRemoved(position);
+                        }
+                    }
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener createRoom = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String roomId = data.optString("roomId");
+                    String roomName = data.optString("roomName");
+
+                    roomList.add(new RoomObject(roomId, roomName, "", 1));
+                    mainAdapter.notifyItemInserted(roomList.size()-1);
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener settingRoom = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String roomId = data.optString("roomId");
+                    String pass = data.optString("pass");
+
+                    int position = takePositionRoom(roomId);
+
+                    if(roomList.size() > 0){
+                        roomList.get(position).setPass(pass);
+                        mainAdapter.notifyItemChanged(position);
+                    }
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener start = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String roomId = data.optString("roomId");
+
+                    int position = takePositionRoom(roomId);
+
+                    if(roomList.size() > 0){
+                        roomList.remove(position);
+                        mainAdapter.notifyItemRemoved(position);
+                    }
+                }
+            });
+        }
+    };
 }
