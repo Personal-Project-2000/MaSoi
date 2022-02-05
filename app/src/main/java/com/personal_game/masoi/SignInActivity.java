@@ -23,6 +23,7 @@ import com.personal_game.masoi.api.ServiceAPI_lib;
 import com.personal_game.masoi.backup.Shared_Preferences;
 import com.personal_game.masoi.databinding.ActivitySignInBinding;
 import com.personal_game.masoi.object.Message;
+import com.personal_game.masoi.object.Message_Adress;
 import com.personal_game.masoi.object.Message_RoomDetail;
 import com.personal_game.masoi.object.PlayerObject1;
 import com.personal_game.masoi.socket.SetupSocket;

@@ -52,11 +52,32 @@
         android:layout_marginTop="10dp"
         android:layout_height="500dp"/>
 
-    <TextView
-        android:id="@+id/txtTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="05:00:00"
-        android:textSize="20sp"
-        android:layout_gravity="center_horizontal"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="05:00:00"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintRight_toLeftOf="@id/btnSkip"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.google.android.material.button.MaterialButton
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/btnSkip"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="Bỏ qua"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/black"
+            app:cornerRadius="8sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

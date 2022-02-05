@@ -204,7 +204,7 @@ public class WaitActivity extends AppCompatActivity {
     private void setRoom(){
         playerAdapter = new PlayerAdapter1(playerList, getApplication(), 2, new PlayerAdapter1.PlayerListeners() {
             @Override
-            public void onClick() {
+            public void onClick(PlayerObject1 player) {
 
             }
         });
@@ -467,8 +467,6 @@ public class WaitActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplication(), "kiểm tra realtime", Toast.LENGTH_SHORT).show();
-
                     JSONObject data = (JSONObject) args[0];
                     String bai = data.optString("bai");
                     loading(true);

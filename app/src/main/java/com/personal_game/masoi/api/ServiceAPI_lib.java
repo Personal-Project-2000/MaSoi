@@ -1,6 +1,7 @@
 package com.personal_game.masoi.api;
 
 import com.personal_game.masoi.object.Message;
+import com.personal_game.masoi.object.Message_Adress;
 import com.personal_game.masoi.object.Message_BaiInfo;
 import com.personal_game.masoi.object.Message_History;
 import com.personal_game.masoi.object.Message_Info;
@@ -91,4 +92,9 @@ public interface ServiceAPI_lib {
 
     @GET("Bai_Get")
     Call<Message_BaiInfo> BaiInfo(@Query("baiId") String baiId);
+
+    //-----------------------------------------------Adress--------------------------------------------------------
+
+    @GET("Adress_Get")
+    Call<Message_Adress> Address();
 }

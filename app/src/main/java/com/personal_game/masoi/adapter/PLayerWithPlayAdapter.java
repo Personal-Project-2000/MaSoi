@@ -74,9 +74,15 @@ public class PLayerWithPlayAdapter extends RecyclerView.Adapter<PLayerWithPlayAd
             binding.txtName.setText(player.getName());
 
             if(player.isDie()){
-                binding.layoutMain.setBackgroundResource(R.color.gray);
+                binding.layoutMain.setBackgroundResource(R.drawable.vien_gray);
             }else{
-                binding.layoutMain.setBackgroundResource(R.color.white);
+                binding.layoutMain.setBackgroundResource(R.drawable.vien1);
+            }
+
+            if(player.isDieNew()){
+                binding.layoutMain.setBackgroundResource(R.drawable.vien_red);
+            }else{
+                binding.layoutMain.setBackgroundResource(R.drawable.vien1);
             }
 
             if(player.isHypnosis()){
@@ -98,11 +104,7 @@ public class PLayerWithPlayAdapter extends RecyclerView.Adapter<PLayerWithPlayAd
             }
 
             binding.layoutMain.setOnClickListener(v -> {
-                if(player.isDie()){
-                    Toast.makeText(context, "Người này đã chết", Toast.LENGTH_SHORT).show();
-                }else {
-                    playerListeners.onClick(player);
-                }
+                playerListeners.onClick(player);
             });
         }
     }

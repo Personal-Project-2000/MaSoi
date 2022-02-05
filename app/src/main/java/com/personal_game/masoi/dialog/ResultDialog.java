@@ -21,11 +21,13 @@ public class ResultDialog extends Dialog {
     private LayoutResultBinding layoutResultBinding;
     private PlayerWinAdapter playerWinAdapter;
     private final PlayerWinListeners playerWinListeners;
+    private String result;
 
-    public ResultDialog(Activity a, PlayerWinListeners playerWinListeners) {
+    public ResultDialog(Activity a, PlayerWinListeners playerWinListeners, String result) {
         super(a);
         this.c = a;
         this.playerWinListeners = playerWinListeners;
+        this.result = result;
     }
 
     @Override
@@ -40,6 +42,8 @@ public class ResultDialog extends Dialog {
     }
 
     private void init(){
+        layoutResultBinding.txtResult.setText(result);
+
         setPlayer();
         setListeners();
     }

@@ -20,11 +20,22 @@ public class Shared_Preferences {
         editor.commit();
     }
 
+    public void saveIp(String Ip){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Ip", Ip);
+        editor.apply();
+        editor.commit();
+    }
+
     public String getTk(){
         return sharedPreferences.getString("Tk", "");
     }
 
     public String getPass(){
         return sharedPreferences.getString("Pass", "");
+    }
+
+    public String getIp(){
+        return sharedPreferences.getString("Ip", "");
     }
 }

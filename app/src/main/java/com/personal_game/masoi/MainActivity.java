@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -54,11 +55,14 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -74,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView name;
     private UserObject user;
     private List<RoomObject> roomList = new ArrayList<>();
+    private Socket mSocket;
+    {
+        try {
+            mSocket = IO.socket(SetupSocket.uriLocal);
+        } catch (URISyntaxException e) {
+            e.getMessage();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
+        SetupSocket.mSocket = mSocket;
+
         img = activityMainBinding.navigationView.getHeaderView(0).findViewById(R.id.imgMain);
         imgBack = activityMainBinding.navigationView.getHeaderView(0).findViewById(R.id.imgBack);
         name = activityMainBinding.navigationView.getHeaderView(0).findViewById(R.id.txtName);
@@ -186,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     mainAdapter = new MainAdapter(roomList, getApplication(), new MainAdapter.MainListeners() {
                         @Override
                         public void onClickLock(RoomObject roomObject) {
+                            loading(true);
                             PassRoomDialog dialog = new PassRoomDialog(MainActivity.this, new PassRoomDialog.JoinListeners() {
                                 @Override
                                 public void onClick(String pass) {
@@ -199,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onClickUnLock(RoomObject roomObject) {
+                            loading(true);
                             JoinRoom(roomObject, "");
                         }
                     });
@@ -295,11 +311,14 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification1(), Toast.LENGTH_SHORT).show();
                 }
+
+                loading(false);
             }
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
                 Toast.makeText(getApplication(), "Tạo phòng thất bại", Toast.LENGTH_SHORT).show();
+                loading(false);
             }
         });
     }
@@ -354,6 +373,16 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    private void loading(boolean Loading) {
+        if (Loading) {
+            activityMainBinding.progressBar.setVisibility(View.VISIBLE);
+            activityMainBinding.rclRoom.setVisibility(View.GONE);
+        } else {
+            activityMainBinding.progressBar.setVisibility(View.GONE);
+            activityMainBinding.rclRoom.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void socket(){
         SetupSocket.mSocket.on("S_joinroom1", joinRoom);
         SetupSocket.mSocket.on("S_exitroom1", exitRoom);
@@ -370,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
                     String roomId = data.optString("roomId");
+                    String roomName = data.optString("roomName");
                     int quantity = data.optInt("quantity");
 
                     int position = takePositionRoom(roomId);

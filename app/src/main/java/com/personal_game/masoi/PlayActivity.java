@@ -57,7 +57,7 @@ public class PlayActivity extends AppCompatActivity {
     private PLayerWithPlayAdapter pLayerWithPlayAdapter;
     private RoomObject room;
     private List<PlayerObject2> playerList = new ArrayList<>();
-    private PlayerObject1 mine;
+    private PlayerObject2 mine;
     private String Tk;
     private BaiObject bai;
     private VoteDialog voteDialog ;
@@ -70,6 +70,8 @@ public class PlayActivity extends AppCompatActivity {
     private int typePotion = 1;
     //dành cho người có chức năng cupid, thổi sáo
     private int amount = 0;
+    //dành cho phù thủy
+    private boolean isPositionDie = false, isPositionHelp = false;
 
     private TimerTask timerTask = new TimerTask() {
         @Override
@@ -155,20 +157,22 @@ public class PlayActivity extends AppCompatActivity {
         Intent intent = getIntent();
         room = (RoomObject) intent.getSerializableExtra("room");
         List<PlayerObject1> playerListTemp = (List<PlayerObject1>) intent.getSerializableExtra("playerList");
-        mine = (PlayerObject1) intent.getSerializableExtra("mine");
+        PlayerObject1 player1 = (PlayerObject1) intent.getSerializableExtra("mine");
         Tk = intent.getStringExtra("Tk");
         bai = (BaiObject) intent.getSerializableExtra("bai");
 
+        mine = new PlayerObject2(player1.getTk(), player1.getName(), player1.getImg(), player1.isBoss());
+
         for(PlayerObject1 player : playerListTemp){
-            playerList.add(new PlayerObject2(player.getTk(), player.getName(), player.getImg()));
+            playerList.add(new PlayerObject2(player.getTk(), player.getName(), player.getImg(), player.isBoss()));
         }
 
         if(playerList.size() >= 12) {
-            VoteDialog dialog = new VoteDialog(PlayActivity.this, 1, "Bạn muốn chọn A làm tộc trưởng?", playerListTemp);
-
-            dialog.show();
-            dialog.getWindow().setLayout(700, 1200);
-            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+//            VoteDialog dialog = new VoteDialog(PlayActivity.this, 1, "Bạn muốn chọn A làm tộc trưởng?", playerListTemp);
+//
+//            dialog.show();
+//            dialog.getWindow().setLayout(700, 1200);
+//            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
         }
 
         if(bai != null) {
@@ -190,7 +194,13 @@ public class PlayActivity extends AppCompatActivity {
             if(bai.getId().equals("61ea0f9dc550781bbe59b365")){
                 activityPlayBinding.imgHelp.setImageResource(R.drawable.ic_potion_help);
                 activityPlayBinding.imgDie.setImageResource(R.drawable.ic_potion_die);
+                isPositionHelp = true;
+                isPositionDie = true;
             }
+
+//            if(bai.getName().equals("Tình Yêu") || bai.getName().equals("Thợ Săn")){
+//                activityPlayBinding.btnContinue.setVisibility(View.INVISIBLE);
+//            }
         }
 
         setListeners();
@@ -213,45 +223,124 @@ public class PlayActivity extends AppCompatActivity {
         });
 
         activityPlayBinding.imgGia.setOnClickListener(v -> {
-            AdvocateDialog dialog = new AdvocateDialog(this, new AdvocateDialog.AdvocateListeners() {
-                @Override
-                public void onClickYes() {
-
-                }
-
-                @Override
-                public void onClickNo() {
-
-                }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(700, 1200);
-            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+//            AdvocateDialog dialog = new AdvocateDialog(this, new AdvocateDialog.AdvocateListeners() {
+//                @Override
+//                public void onClickYes() {
+//
+//                }
+//
+//                @Override
+//                public void onClickNo() {
+//
+//                }
+//            });
+//
+//            dialog.show();
+//            dialog.getWindow().setLayout(700, 1200);
+//            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
         });
 
         activityPlayBinding.imgLove.setOnClickListener(v -> {
 
-            ResultDialog dialog = new ResultDialog(this, new ResultDialog.PlayerWinListeners() {
-                @Override
-                public void onClickContinue() {
-                    StoryDialog dialog1 = new StoryDialog(PlayActivity.this, new StoryDialog.StoryListeners() {
-                        @Override
-                        public void onClickContinue() {
-                            Intent intent = new Intent(PlayActivity.this, WaitActivity.class);
-                            startActivity(intent);
+//            ResultDialog dialog = new ResultDialog(this, new ResultDialog.PlayerWinListeners() {
+//                @Override
+//                public void onClickContinue() {
+//                    StoryDialog dialog1 = new StoryDialog(PlayActivity.this, new StoryDialog.StoryListeners() {
+//                        @Override
+//                        public void onClickContinue() {
+//                            Intent intent = new Intent(PlayActivity.this, WaitActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//
+//                    dialog1.show();
+//                    dialog1.getWindow().setLayout(700, 1150);
+//                    dialog1.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+//                }
+//            });
+//
+//            dialog.show();
+//            dialog.getWindow().setLayout(650, 1100);
+//            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+        });
+
+        activityPlayBinding.btnContinue.setOnClickListener(v -> {
+            if(isAllow) {
+                switch (bai.getId()) {
+                    //Sói
+                    case "61e675a18f96beab7215afee": {
+                        ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                            @Override
+                            public void onClickYes() {
+                                SetupSocket.wolf(mine.getTk(), "", room.getId());
+                                isAllow = false;
+                            }
+                        }, "Bạn không muốn giết ai?");
+
+                        dialog.show();
+                        dialog.getWindow().setLayout(600, 300);
+                    }
+                    break;
+                    //Tiên tri
+                    case "61ea0f7ec550781bbe59b363": {
+                        SetupSocket.prophesy("", room.getId());
+                        isAllow = false;
+                    }
+                    break;
+                    //Bảo vệ
+                    case "61ea0f8ec550781bbe59b364": {
+                        ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                            @Override
+                            public void onClickYes() {
+                                SetupSocket.guard("", room.getId());
+                                isAllow = false;
+                            }
+                        }, "Bạn không muốn bảo vệ ai?");
+
+                        dialog.show();
+                        dialog.getWindow().setLayout(600, 300);
+                    }
+                    break;
+                    //Phù Thủy
+                    case "61ea0f9dc550781bbe59b365": {
+                        if (typePotion == 1) {
+                            ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                @Override
+                                public void onClickYes() {
+                                    SetupSocket.witch(mine.getTk(), "", typePotion, room.getId());
+                                    typePotion = 2;
+                                }
+                            }, "Bạn không muốn cứu ai?");
+
+                            dialog.show();
+                            dialog.getWindow().setLayout(600, 300);
+
+                            Toast.makeText(getApplication(), "Bạn muốn giết ai nào?", Toast.LENGTH_SHORT).show();
+                            //trả về giá trị bạn đầu
+                            for(int i = 0; i < playerList.size(); i++){
+                                playerList.get(i).setDieNew(false);
+                            }
+                            pLayerWithPlayAdapter.notifyDataSetChanged();
+                        } else {
+                            ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                @Override
+                                public void onClickYes() {
+                                    SetupSocket.witch(mine.getTk(), "", typePotion, room.getId());
+                                    typePotion = 1;
+                                    isAllow = false;
+                                }
+                            }, "Bạn không muốn giết ai?");
                         }
-                    });
-
-                    dialog1.show();
-                    dialog1.getWindow().setLayout(700, 1150);
-                    dialog1.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+                    }
+                    break;
+                    //Thổi sáo
+                    case "61ea100ec550781bbe59b36a": {
+                        SetupSocket.flute("", room.getId());
+                        isAllow = false;
+                    }
+                    break;
                 }
-            });
-
-            dialog.show();
-            dialog.getWindow().setLayout(650, 1100);
-            dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+            }
         });
     }
 
@@ -260,71 +349,175 @@ public class PlayActivity extends AppCompatActivity {
             @Override
             public void onClick(PlayerObject2 player) {
                 if(isAllow) {
-                    switch (bai.getId()) {
-                        //Sói
-                        case "61e675a18f96beab7215afee": {
-                            SetupSocket.wolf(mine.getTk(), player.getTk(), room.getId());
+                    if(!mine.isDie()) {
+                        if(!player.isDie()) {
+                            switch (bai.getId()) {
+                                //Sói
+                                case "61e675a18f96beab7215afee": {
+                                    ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                        @Override
+                                        public void onClickYes() {
+                                            SetupSocket.wolf(mine.getTk(), player.getTk(), room.getId());
+                                            isAllow = false;
+                                        }
+                                    }, "Bạn muốn giết " + player.getName() + "?");
 
-                            isAllow = false;
-                        }
-                        break;
-                        //Tiên tri
-                        case "61ea0f7ec550781bbe59b363": {
-                            SetupSocket.prophesy(player.getTk(), room.getId());
+                                    dialog.show();
+                                    dialog.getWindow().setLayout(600, 300);
+                                }
+                                break;
+                                //Tiên tri
+                                case "61ea0f7ec550781bbe59b363": {
+                                    ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                        @Override
+                                        public void onClickYes() {
+                                            SetupSocket.prophesy(player.getTk(), room.getId());
+                                            isAllow = false;
+                                        }
+                                    }, "Bạn muốn xem " + player.getName() + " có phải sói không?");
 
-                            isAllow = false;
-                        }
-                        break;
-                        //Bảo vệ
-                        case "61ea0f8ec550781bbe59b364": {
-                            SetupSocket.guard(player.getTk(), room.getId());
+                                    dialog.show();
+                                    dialog.getWindow().setLayout(600, 300);
+                                }
+                                break;
+                                //Bảo vệ
+                                case "61ea0f8ec550781bbe59b364": {
+                                    ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                        @Override
+                                        public void onClickYes() {
+                                            SetupSocket.guard(player.getTk(), room.getId());
+                                            isAllow = false;
+                                        }
+                                    }, "Bạn bảo vệ " + player.getName() + " đêm nay có phải sói không?");
 
-                            isAllow = false;
-                        }
-                        break;
-                        //Phù Thủy
-                        case "61ea0f9dc550781bbe59b365": {
-                            SetupSocket.witch(mine.getTk(), player.getTk(), typePotion, room.getId());
-                            if (typePotion == 1) {
-                                typePotion = 2;
-                            } else {
-                                typePotion = 1;
+                                    dialog.show();
+                                    dialog.getWindow().setLayout(600, 300);
+                                }
+                                break;
+                                //Phù Thủy
+                                case "61ea0f9dc550781bbe59b365": {
+                                    ConfirmDialog dialog;
 
-                                isAllow = false;
+                                    if (typePotion == 1) {
+                                        if(player.isDieNew()) {
+                                            if (isPositionHelp) {
+                                                dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                                    @Override
+                                                    public void onClickYes() {
+                                                        SetupSocket.witch(mine.getTk(), player.getTk(), typePotion, room.getId());
+                                                        activityPlayBinding.imgHelp.setImageResource(R.drawable.ic_potion);
+                                                        isPositionHelp = false;
+                                                        typePotion = 2;
+
+                                                        //trả về giá trị bạn đầu
+                                                        for(int i = 0; i < playerList.size(); i++){
+                                                            playerList.get(i).setDieNew(false);
+                                                        }
+                                                        pLayerWithPlayAdapter.notifyDataSetChanged();
+
+                                                        Toast.makeText(getApplication(), "Bạn muốn giết ai", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }, "Bạn muốn cứu " + player.getName() + " có phải không?");
+
+                                                dialog.show();
+                                                dialog.getWindow().setLayout(600, 300);
+                                            } else {
+                                                Toast.makeText(getApplication(), "Bạn đã sử dụng bình cứu, chi có thể bấm bỏ qua", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }else{
+                                            Toast.makeText(getApplication(), "Người này còn sống, bạn hãy chọn người chết để cứu hoặc bấm bỏ quá", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        if (isPositionDie) {
+                                                dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                                    @Override
+                                                    public void onClickYes() {
+                                                        SetupSocket.witch(mine.getTk(), player.getTk(), typePotion, room.getId());
+                                                        activityPlayBinding.imgDie.setImageResource(R.drawable.ic_potion);
+                                                        isPositionDie = false;
+                                                        typePotion = 1;
+                                                        isAllow = false;
+                                                    }
+                                                }, "Bạn muốn giết " + player.getName() + " có phải không?");
+
+                                                dialog.show();
+                                                dialog.getWindow().setLayout(600, 300);
+                                        } else {
+                                            Toast.makeText(getApplication(), "Bạn đã sử dụng bình giết, chi có thể bấm bỏ qua", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                                break;
+                                //Thợ săn
+                                case "61ea0fabc550781bbe59b366": {
+                                    if(player.getTk().equals(mine.getTk())){
+                                        Toast.makeText(getApplication(), "Bạn không thể bắn chính mình được, hãy chọn người khác", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                            @Override
+                                            public void onClickYes() {
+                                                SetupSocket.hunter(player.getTk(), room.getId());
+                                                isAllow = false;
+                                            }
+                                        }, "Bạn muốn bắn " + player.getName() + " có phải không?");
+
+                                        dialog.show();
+                                        dialog.getWindow().setLayout(600, 300);
+                                    }
+                                }
+                                break;
+                                //cupid
+                                case "61ea0fbec550781bbe59b367": {
+                                    ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                        @Override
+                                        public void onClickYes() {
+                                            SetupSocket.cupid(player.getTk(), room.getId());
+                                            amount++;
+                                            if (amount == 1) {
+                                                Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                isAllow = false;
+                                            }
+                                        }
+                                    }, "Bạn muốn kết duyên " + player.getName() + " có phải không?");
+
+                                    dialog.show();
+                                    dialog.getWindow().setLayout(600, 300);
+                                }
+                                break;
+                                //Thổi sáo
+                                case "61ea100ec550781bbe59b36a": {
+                                    if(player.getTk().equals(mine.getTk())){
+                                        Toast.makeText(getApplication(), "Bạn không thể thôi niêm chính mình được, hãy chọn người khác", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
+                                            @Override
+                                            public void onClickYes() {
+                                                SetupSocket.flute(player.getTk(), room.getId());
+                                                amount++;
+                                                if (amount == 1) {
+                                                    Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    isAllow = false;
+                                                    amount = 0;
+                                                }
+                                            }
+                                        }, "Bạn muốn thôi niên " + player.getName() + " có phải không?");
+
+                                        dialog.show();
+                                        dialog.getWindow().setLayout(600, 300);
+                                    }
+                                }
+                                break;
                             }
+                        }else{
+                            Toast.makeText(getApplication(), "Người này đã chết", Toast.LENGTH_SHORT).show();
                         }
-                        break;
-                        //Thợ săn
-                        case "61ea0fabc550781bbe59b366": {
-                            SetupSocket.hunter(player.getTk(), room.getId());
-
-                            isAllow = false;
-                        }
-                        break;
-                        //cupid
-                        case "61ea0fbec550781bbe59b367": {
-                            SetupSocket.cupid(player.getTk(), room.getId());
-                            amount++;
-                            if (amount == 1) {
-                                Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();
-                            }else{
-                                isAllow = false;
-                            }
-                        }
-                        break;
-                        //Thổi sáo
-                        case "61ea100ec550781bbe59b36a": {
-                            SetupSocket.flute(player.getTk(), room.getId());
-                            amount++;
-                            if (amount == 1) {
-                                Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();
-                            }else{
-                                isAllow = false;
-                                amount = 0;
-                            }
-                        }
-                        break;
+                    }else{
+                        Toast.makeText(getApplication(), "Bạn đã chết nên chỉ có thể bấm bỏ qua", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(getApplication(), "Chưa đến lượt của bạn", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -374,6 +567,7 @@ public class PlayActivity extends AppCompatActivity {
         SetupSocket.mSocket.on("S_flute", flute);
         SetupSocket.mSocket.on("S_playerVote", advocate);
         SetupSocket.mSocket.on("S_changeFunc", changeFunc);
+        SetupSocket.mSocket.on("S_prophesy", prophesy);
     }
 
     private final Emitter.Listener exitRoom = new Emitter.Listener() {
@@ -405,27 +599,141 @@ public class PlayActivity extends AppCompatActivity {
                     JSONObject data = (JSONObject) args[0];
                     String baiName = data.optString("baiName");
                     String baiId = data.optString("baiId");
-                    List<PlayerDie> playerDies = new ArrayList<>();
+
+                    activityPlayBinding.txtCall.setText(baiName);
+
+                    if(baiId.equals(bai.getId())){
+                        isAllow = true;
+                        if(!mine.isDie())
+                            activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien_yellow);
+                        else
+                            activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien_yellowgray);
+                    }else{
+                        isAllow = false;
+                        if(!mine.isDie())
+                            activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien);
+                        else
+                            activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien_gray);
+                    }
+
+                    List<PlayerObject1> playerDies = new ArrayList<>();
+                    List<PlayerObject1> playerAliveList = new ArrayList<>();
+                    List<PlayerObject1> playerVotes = new ArrayList<>();
                     try {
+                        JSONArray playerVote = data.optJSONArray("playerVote");
+
+                        if (playerVote != null) {
+                            for (int i = 0; i < playerVote.length(); i++) {
+                                JSONObject player = playerVote.getJSONObject(i);
+
+                                String user = player.optString("user");
+                                int position = takePosition(user);
+                                playerVotes.add(new PlayerObject1(user, playerList.get(position).getName(), playerList.get(position).getImg(), false, false));
+                            }
+                        }
+
                         JSONArray playerDie = data.optJSONArray("playerDie");
 
-                        if(playerDie.length() > 0) {
+                        if (playerDie != null) {
                             for (int i = 0; i < playerDie.length(); i++) {
                                 JSONObject player = playerDie.getJSONObject(i);
 
                                 String user = player.optString("user");
                                 int position = takePosition(user);
-                                playerDies.add(new PlayerDie(user, room.getId(), playerList.get(position).getName(), playerList.get(position).getImg()));
+                                playerDies.add(new PlayerObject1(user, playerList.get(position).getName(), playerList.get(position).getImg(), false, false));
+                                //check bài phù thủy
+                                if(bai.getId().equals("61ea0f9dc550781bbe59b365") && baiId.equals(bai.getId())){
+                                    playerList.get(position).setDieNew(true);
+                                }else {
+                                    if(baiId.equals("1")) {
+                                        if(user.equals(mine.getTk())){
+                                            mine.setDie(true);
+                                            activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien_gray);
+                                        }
+                                        playerList.get(position).setDie(true);
+                                    }
+                                }
+                                pLayerWithPlayAdapter.notifyItemChanged(position);
+                            }
+                        }
+
+                        JSONArray playerAlive = data.optJSONArray("playerAlive");
+
+                        if(playerAlive != null){
+                            for (int i = 0; i < playerAlive.length(); i++) {
+                                JSONObject playerAlive1 = playerAlive.getJSONObject(i);
+
+                                String userAlive = playerAlive1.optString("user");
+                                int position = takePosition(userAlive);
+                                playerAliveList.add(new PlayerObject1(userAlive, playerList.get(position).getName(), playerList.get(position).getImg(), false, false));
+
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    if(baiId == bai.getId()){
-                        isAllow = true;
+                    if(baiId.equals("1")){
+                        if(!mine.isDie()) {
+                            voteDialog = new VoteDialog(PlayActivity.this, 2, "", playerAliveList, new VoteDialog.VoteListeners() {
+                                @Override
+                                public void onClickYes(PlayerObject1 player) {
+                                    SetupSocket.vote(mine.getTk(), player.getTk(), room.getId());
+                                }
+                            });
+
+                            voteDialog.show();
+                            voteDialog.getWindow().setLayout(700, 1200);
+                            voteDialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+                        }
+                    }else if(baiId.equals("2")){
+                        if(voteDialog != null)
+                            voteDialog.dismiss();
+                        advocateDialog = new AdvocateDialog(PlayActivity.this, playerVotes, new AdvocateDialog.AdvocateListeners() {
+                            @Override
+                            public void onClickYes(PlayerObject1 player) {
+                                SetupSocket.advocate(mine.getTk(), room.getId(), 1);
+                            }
+
+                            @Override
+                            public void onClickNo(PlayerObject1 player) {
+                                SetupSocket.advocate(mine.getTk(), room.getId(), 2);
+                            }
+                        }, mine);
+
+                        advocateDialog.show();
+                        advocateDialog.getWindow().setLayout(700, 1200);
+                        advocateDialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
                     }else{
-                        isAllow = false;
+                        if(advocateDialog != null) {
+                            advocateDialog.dismiss();
+                        }
+                    }
+
+                    if(baiId.equals("3")){
+                        String notification = data.optString("notification");
+
+                        ResultDialog dialog = new ResultDialog(PlayActivity.this, new ResultDialog.PlayerWinListeners() {
+                            @Override
+                            public void onClickContinue() {
+                                StoryDialog dialog1 = new StoryDialog(PlayActivity.this, new StoryDialog.StoryListeners() {
+                                    @Override
+                                    public void onClickContinue() {
+                                        Toast.makeText(getApplication(), "Hãy bắt đầu trận mới nào", Toast.LENGTH_SHORT).show();
+
+                                        exitRoom();
+                                    }
+                                });
+
+                                dialog1.show();
+                                dialog1.getWindow().setLayout(700, 1150);
+                                dialog1.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
+                            }
+                        }, notification);
+
+                        dialog.show();
+                        dialog.getWindow().setLayout(650, 1100);
+                        dialog.setCanceledOnTouchOutside(false); //Bấm ngoài hộp thoại không dismiss
                     }
                 }
             });
@@ -495,12 +803,21 @@ public class PlayActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    String user = data.optString("user");
+                    String user = data.optString("userDie");
                     String message = data.optString("message");
+                    boolean isDie = data.optBoolean("isDie");
 
                     int position = takePosition(user);
 
-                    Toast.makeText(getApplication(), playerList.get(position).getTk()+" "+message, Toast.LENGTH_SHORT).show();
+                    if (user.equals(mine.getTk()) && isDie) {
+                        playerList.get(position).setDie(true);
+                        pLayerWithPlayAdapter.notifyItemChanged(position);
+
+                        mine.setDie(true);
+                        activityPlayBinding.txtCall.setBackgroundResource(R.drawable.vien_gray);
+                    }
+
+                    Toast.makeText(getApplication(), playerList.get(position).getName()+" "+message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -518,6 +835,21 @@ public class PlayActivity extends AppCompatActivity {
                         bai.setName("Sói");
                         GetBai("61e675a18f96beab7215afee");
                     }
+                }
+            });
+        }
+    };
+
+    private final Emitter.Listener prophesy = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    String answer = data.optString("answer");
+
+                    Toast.makeText(getApplication(), answer, Toast.LENGTH_SHORT).show();
                 }
             });
         }

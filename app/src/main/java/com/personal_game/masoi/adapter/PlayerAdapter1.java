@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.personal_game.masoi.R;
 import com.personal_game.masoi.databinding.ItemPlayerBinding;
-import com.personal_game.masoi.object.PlayerObject;
 import com.personal_game.masoi.object.PlayerObject1;
 import com.squareup.picasso.Picasso;
 
@@ -84,18 +83,18 @@ public class PlayerAdapter1 extends RecyclerView.Adapter<PlayerAdapter1.ViewHold
             }
 
             if(playerObject.isStatus()){
-                binding.layoutMain.setBackgroundResource(R.drawable.vien_vang);
+                binding.layoutMain.setBackgroundResource(R.drawable.vien_yellow);
             }else{
                 binding.layoutMain.setBackgroundResource(R.drawable.vien);
             }
 
             binding.layoutMain.setOnClickListener(v -> {
-                playerListeners.onClick();
+                playerListeners.onClick(playerObject);
             });
         }
     }
 
     public interface PlayerListeners {
-        void onClick();
+        void onClick(PlayerObject1 player);
     }
 }
