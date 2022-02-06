@@ -855,9 +855,10 @@ public class PlayActivity extends AppCompatActivity {
         }
     };
 
+    //dành cho lá bài nữa người nữa sói
     private void GetBai(String baiId){
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<Message_BaiInfo> call = serviceAPI_lib.BaiInfo(baiId);
+        Call<Message_BaiInfo> call = serviceAPI_lib.BaiInfo(baiId, mine.getTk(), "", "");
         call.enqueue(new Callback<Message_BaiInfo>() {
             @Override
             public void onResponse(Call<Message_BaiInfo> call, Response<Message_BaiInfo> response) {

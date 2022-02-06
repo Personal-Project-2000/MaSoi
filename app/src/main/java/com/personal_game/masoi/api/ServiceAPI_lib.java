@@ -91,10 +91,12 @@ public interface ServiceAPI_lib {
     //-----------------------------------------------Bài--------------------------------------------------------
 
     @GET("Bai_Get")
-    Call<Message_BaiInfo> BaiInfo(@Query("baiId") String baiId);
+    Call<Message_BaiInfo> BaiInfo(@Query("baiId") String baiId, @Query("Tk") String Tk, @Query("roomId") String roomId, @Query("historyId") String historyId);
 
-    //-----------------------------------------------Adress--------------------------------------------------------
+    //-----------------------------------------------Address--------------------------------------------------------
 
     @GET("Adress_Get")
     Call<Message_Adress> Address();
+
+    //-----------------------------------------------Story--------------------------------------------------------
 }

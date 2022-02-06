@@ -289,7 +289,7 @@ public class WaitActivity extends AppCompatActivity {
             public void onResponse(Call<Message> call, Response<Message> response) {
                 loading(false);
                 if(response.body().getStatus1() == 1){
-                    SetupSocket.start(room.getId(), room.getVoteTime(), room.getAdvocateTime());
+                    SetupSocket.start(room.getId(), room.getVoteTime(), room.getAdvocateTime(), response.body().getId1());
                 }else{
                     Toast.makeText(getApplication(), response.body().getNotification1(), Toast.LENGTH_SHORT).show();
                 }
@@ -303,9 +303,9 @@ public class WaitActivity extends AppCompatActivity {
         });
     }
 
-    private void GetBai(String baiId){
+    private void GetBai(String baiId, String historyId){
         ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
-        Call<Message_BaiInfo> call = serviceAPI_lib.BaiInfo(baiId);
+        Call<Message_BaiInfo> call = serviceAPI_lib.BaiInfo(baiId, mine.getTk(), room.getId(), historyId);
         call.enqueue(new Callback<Message_BaiInfo>() {
             @Override
             public void onResponse(Call<Message_BaiInfo> call, Response<Message_BaiInfo> response) {
@@ -469,8 +469,9 @@ public class WaitActivity extends AppCompatActivity {
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
                     String bai = data.optString("bai");
+                    String historyId = data.optString("historyId");
                     loading(true);
-                    GetBai(bai);
+                    GetBai(bai, historyId);
                 }
             });
         }
@@ -484,8 +485,9 @@ public class WaitActivity extends AppCompatActivity {
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
                     String bai = data.optString("bai");
+                    String historyId = data.optString("historyId");
                     loading(true);
-                    GetBai(bai);
+                    GetBai(bai, historyId);
                 }
             });
         }

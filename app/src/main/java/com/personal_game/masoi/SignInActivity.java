@@ -24,9 +24,12 @@ import com.personal_game.masoi.backup.Shared_Preferences;
 import com.personal_game.masoi.databinding.ActivitySignInBinding;
 import com.personal_game.masoi.object.Message;
 import com.personal_game.masoi.object.Message_Adress;
+import com.personal_game.masoi.object.Message_BaiInfo;
 import com.personal_game.masoi.object.Message_RoomDetail;
 import com.personal_game.masoi.object.PlayerObject1;
+import com.personal_game.masoi.object.RoomObject;
 import com.personal_game.masoi.socket.SetupSocket;
+import com.personal_game.masoi.socket.model.Room;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -167,8 +170,10 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Message_RoomDetail> call, Response<Message_RoomDetail> response) {
                 loading(false);
+                //nếu trạng trái bằng 1 là do tài khoản đang chơi mà lại bị out phòng nên đăng nhập sẽ đc vô lại phòng đó
                 if(response.body().getStatus1() == 1){
                     List<PlayerObject1> playerList = response.body().getPlayers1();
+                    //kiểm tra trạng thái phòng đang phòng chờ hay đã chơi => true có nghĩa đang chờ
                     if(response.body().getRoomInfo1().isStatus()){
 
                         int code;
@@ -186,12 +191,10 @@ public class SignInActivity extends AppCompatActivity {
                         intent.putExtra("Tk", Tk);
                         startActivity(intent);
                     }else{
-                        Intent intent = new Intent(SignInActivity.this, PlayActivity.class);
-                        intent.putExtra("playerList", (Serializable) response.body().getPlayers1());
-                        intent.putExtra("room", response.body().getRoomInfo1());
-                        intent.putExtra("mine", playerList.get(takePosition(playerList, Tk)));
-                        intent.putExtra("Tk", Tk);
-                        startActivity(intent);
+                        int posotion = takePosition(playerList, Tk);
+                        String baiId = playerList.get(posotion).getBaiId();
+
+                        GetBai(baiId, playerList, response.body().getRoomInfo1(), Tk, playerList.get(posotion));
                     }
                 }else{
                     Intent intent = new Intent(SignInActivity.this, MainActivity.class);
@@ -202,6 +205,35 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Message_RoomDetail> call, Throwable t) {
+                loading(false);
+            }
+        });
+    }
+
+    private void GetBai(String baiId, List<PlayerObject1> playerList, RoomObject room, String Tk, PlayerObject1 mine){
+        loading(true);
+        ServiceAPI_lib serviceAPI_lib = getRetrofit_lib().create(ServiceAPI_lib.class);
+        Call<Message_BaiInfo> call = serviceAPI_lib.BaiInfo(baiId, "", "", "");
+        call.enqueue(new Callback<Message_BaiInfo>() {
+            @Override
+            public void onResponse(Call<Message_BaiInfo> call, Response<Message_BaiInfo> response) {
+                if(response.body().getStatus1() == 1 && response.body().getBaiInfo1() != null){
+                    Intent intent = new Intent(SignInActivity.this, PlayActivity.class);
+                    intent.putExtra("playerList", (Serializable) playerList);
+                    intent.putExtra("room", room);
+                    intent.putExtra("bai", response.body().getBaiInfo1());
+                    intent.putExtra("mine", mine);
+                    intent.putExtra("Tk", Tk);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplication(), "Hãy thử đăng nhập lại", Toast.LENGTH_SHORT).show();
+                }
+                loading(false);
+            }
+
+            @Override
+            public void onFailure(Call<Message_BaiInfo> call, Throwable t) {
+                Toast.makeText(getApplication(), "Hãy thử đăng nhập lại", Toast.LENGTH_SHORT).show();
                 loading(false);
             }
         });

@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        SetupSocket.mSocket = mSocket;
+        //SetupSocket.mSocket = mSocket;
 
         img = activityMainBinding.navigationView.getHeaderView(0).findViewById(R.id.imgMain);
         imgBack = activityMainBinding.navigationView.getHeaderView(0).findViewById(R.id.imgBack);

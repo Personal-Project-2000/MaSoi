@@ -85,10 +85,10 @@ public class SetupSocket {
         mSocket.emit("ready", gson.toJson(player));
     }
 
-    //data: roomId || voteTime || advocateTime
-    public static void start(String roomId, int voteTime, int advocateTime){
+    //data: roomId || voteTime || advocateTime || historyId
+    public static void start(String roomId, int voteTime, int advocateTime, String historyId){
         Gson gson = new Gson();
-        Room room = new Room(roomId, voteTime, advocateTime);
+        Room room = new Room(roomId, voteTime, advocateTime, historyId);
         mSocket.emit("start", gson.toJson(room));
     }
 

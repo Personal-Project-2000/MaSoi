@@ -9,6 +9,15 @@ public class PlayerObject1 implements Serializable {
     private String img;
     private boolean boss;
     private boolean status;
+    private String baiId;
+
+    public String getBaiId() {
+        return baiId;
+    }
+
+    public void setBaiId(String baiId) {
+        this.baiId = baiId;
+    }
 
     public String getTk() {
         return tk;

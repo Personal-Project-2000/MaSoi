@@ -5,6 +5,7 @@ public class Room {
     private String pass;
     private int voteTime;
     private int advocateTime;
+    private String historyId;
 
     public Room(String roomId, String pass, int voteTime, int advocateTime) {
         this.roomId = roomId;
@@ -17,10 +18,11 @@ public class Room {
         this.roomId = roomId;
     }
 
-    public Room(String roomId, int voteTime, int advocateTime) {
+    public Room(String roomId, int voteTime, int advocateTime, String historyId) {
         this.roomId = roomId;
         this.voteTime = voteTime;
         this.advocateTime = advocateTime;
+        this.historyId = historyId;
     }
 
 
