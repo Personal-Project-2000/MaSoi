@@ -283,7 +283,7 @@ public class PlayActivity extends AppCompatActivity {
                     break;
                     //Tiên tri
                     case "61ea0f7ec550781bbe59b363": {
-                        SetupSocket.prophesy("", room.getId());
+                        SetupSocket.prophesy("", room.getId(), mine.getTk());
                         isAllow = false;
                     }
                     break;
@@ -292,7 +292,7 @@ public class PlayActivity extends AppCompatActivity {
                         ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                             @Override
                             public void onClickYes() {
-                                SetupSocket.guard("", room.getId());
+                                SetupSocket.guard("", room.getId(), mine.getTk());
                                 isAllow = false;
                             }
                         }, "Bạn không muốn bảo vệ ai?");
@@ -335,7 +335,7 @@ public class PlayActivity extends AppCompatActivity {
                     break;
                     //Thổi sáo
                     case "61ea100ec550781bbe59b36a": {
-                        SetupSocket.flute("", room.getId());
+                        SetupSocket.flute("", room.getId(), mine.getTk());
                         isAllow = false;
                     }
                     break;
@@ -371,7 +371,7 @@ public class PlayActivity extends AppCompatActivity {
                                     ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                                         @Override
                                         public void onClickYes() {
-                                            SetupSocket.prophesy(player.getTk(), room.getId());
+                                            SetupSocket.prophesy(player.getTk(), room.getId(), mine.getTk());
                                             isAllow = false;
                                         }
                                     }, "Bạn muốn xem " + player.getName() + " có phải sói không?");
@@ -385,7 +385,7 @@ public class PlayActivity extends AppCompatActivity {
                                     ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                                         @Override
                                         public void onClickYes() {
-                                            SetupSocket.guard(player.getTk(), room.getId());
+                                            SetupSocket.guard(player.getTk(), room.getId(), mine.getTk());
                                             isAllow = false;
                                         }
                                     }, "Bạn bảo vệ " + player.getName() + " đêm nay có phải sói không?");
@@ -456,7 +456,7 @@ public class PlayActivity extends AppCompatActivity {
                                         ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                                             @Override
                                             public void onClickYes() {
-                                                SetupSocket.hunter(player.getTk(), room.getId());
+                                                SetupSocket.hunter(player.getTk(), room.getId(), mine.getTk());
                                                 isAllow = false;
                                             }
                                         }, "Bạn muốn bắn " + player.getName() + " có phải không?");
@@ -471,7 +471,7 @@ public class PlayActivity extends AppCompatActivity {
                                     ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                                         @Override
                                         public void onClickYes() {
-                                            SetupSocket.cupid(player.getTk(), room.getId());
+                                            SetupSocket.cupid(player.getTk(), room.getId(), mine.getTk());
                                             amount++;
                                             if (amount == 1) {
                                                 Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();
@@ -493,7 +493,7 @@ public class PlayActivity extends AppCompatActivity {
                                         ConfirmDialog dialog = new ConfirmDialog(PlayActivity.this, new ConfirmDialog.ExitListeners() {
                                             @Override
                                             public void onClickYes() {
-                                                SetupSocket.flute(player.getTk(), room.getId());
+                                                SetupSocket.flute(player.getTk(), room.getId(), mine.getTk());
                                                 amount++;
                                                 if (amount == 1) {
                                                     Toast.makeText(PlayActivity.this, "Chọn thêm 1 người nữa", Toast.LENGTH_SHORT).show();

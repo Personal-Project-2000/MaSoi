@@ -6,133 +6,144 @@
     android:id="@+id/layoutMain"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/txt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/inputPass"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/inputPass"
-        android:text="Mật khẩu: "
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txtPass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/txt1"
-        app:layout_constraintLeft_toLeftOf="@id/txtVoteTime"
-        android:text="123456"
-        android:gravity="center_vertical"
-        android:textSize="15sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtVoteTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/txt2"
-        app:layout_constraintLeft_toLeftOf="@id/txtAdvocateTime"
-        android:text="5p"
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/inputPass"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/inputPass"
+                android:text="Mật khẩu: "
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/txtAdvocateTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/txt3"
-        app:layout_constraintLeft_toRightOf="@id/txt3"
-        android:text="5p"
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/txtPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt1"
+                app:layout_constraintLeft_toLeftOf="@id/txtVoteTime"
+                android:text="123456"
+                android:gravity="center_vertical"
+                android:textSize="15sp" />
 
-    <EditText
-        android:id="@+id/inputPass"
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/vien"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/spinnerVoteTime"
-        app:layout_constraintRight_toRightOf="parent"/>
+            <TextView
+                android:id="@+id/txtVoteTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt2"
+                app:layout_constraintLeft_toLeftOf="@id/txtAdvocateTime"
+                android:text="5p"
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/txt2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/spinnerVoteTime"
-        app:layout_constraintBottom_toBottomOf="@id/spinnerVoteTime"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Thời gian Vote: "
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/txtAdvocateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/txt3"
+                app:layout_constraintLeft_toRightOf="@id/txt3"
+                android:text="5p"
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <EditText
-        android:id="@+id/spinnerVoteTime"
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/vien"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/inputPass"
-        app:layout_constraintLeft_toLeftOf="@id/spinnerAdvocateTime"
-        app:layout_constraintRight_toRightOf="@id/spinnerAdvocateTime"/>
+            <EditText
+                android:id="@+id/inputPass"
+                android:layout_width="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/vien"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/spinnerVoteTime"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/txt5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintTop_toTopOf="@id/spinnerVoteTime"
-        app:layout_constraintBottom_toBottomOf="@id/spinnerVoteTime"
-        app:layout_constraintLeft_toRightOf="@id/spinnerVoteTime"
-        android:text="phút"
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/spinnerVoteTime"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerVoteTime"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="Thời gian Vote: "
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/txt3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/spinnerAdvocateTime"
-        app:layout_constraintBottom_toBottomOf="@id/spinnerAdvocateTime"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Thời gian biện hộ: "
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <EditText
+                android:id="@+id/spinnerVoteTime"
+                android:layout_width="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/vien"
+                android:inputType="number"
+                app:layout_constraintTop_toBottomOf="@id/inputPass"
+                app:layout_constraintLeft_toLeftOf="@id/spinnerAdvocateTime"
+                app:layout_constraintRight_toRightOf="@id/spinnerAdvocateTime"/>
 
-    <EditText
-        android:id="@+id/spinnerAdvocateTime"
-        android:layout_width="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/vien"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/spinnerVoteTime"
-        app:layout_constraintLeft_toRightOf="@id/txt3"
-        app:layout_constraintRight_toLeftOf="@id/btnSave"/>
+            <TextView
+                android:id="@+id/txt5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintTop_toTopOf="@id/spinnerVoteTime"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerVoteTime"
+                app:layout_constraintLeft_toRightOf="@id/spinnerVoteTime"
+                android:text="phút"
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <TextView
-        android:id="@+id/txt6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintTop_toTopOf="@id/spinnerAdvocateTime"
-        app:layout_constraintBottom_toBottomOf="@id/spinnerAdvocateTime"
-        app:layout_constraintLeft_toRightOf="@id/spinnerAdvocateTime"
-        android:text="phút"
-        android:gravity="center_vertical"
-        android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/txt3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/spinnerAdvocateTime"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerAdvocateTime"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="Thời gian biện hộ: "
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:text="Lưu"
-        app:layout_constraintTop_toBottomOf="@id/spinnerAdvocateTime"
-        app:layout_constraintRight_toRightOf="parent"
-        app:backgroundTint="@color/black"/>
+            <EditText
+                android:id="@+id/spinnerAdvocateTime"
+                android:layout_width="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/vien"
+                android:inputType="number"
+                app:layout_constraintTop_toBottomOf="@id/spinnerVoteTime"
+                app:layout_constraintLeft_toRightOf="@id/txt3"
+                app:layout_constraintRight_toLeftOf="@id/btnSave"/>
+
+            <TextView
+                android:id="@+id/txt6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintTop_toTopOf="@id/spinnerAdvocateTime"
+                app:layout_constraintBottom_toBottomOf="@id/spinnerAdvocateTime"
+                app:layout_constraintLeft_toRightOf="@id/spinnerAdvocateTime"
+                android:text="phút"
+                android:gravity="center_vertical"
+                android:textSize="15sp"/>
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="Lưu"
+                app:layout_constraintTop_toBottomOf="@id/spinnerAdvocateTime"
+                app:layout_constraintRight_toRightOf="parent"
+                app:backgroundTint="@color/black"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

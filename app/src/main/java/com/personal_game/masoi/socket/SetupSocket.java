@@ -92,17 +92,19 @@ public class SetupSocket {
         mSocket.emit("start", gson.toJson(room));
     }
 
-    //data: user || roomId
-    public static void cupid(String user, String roomId){
+    //data: user || roomId || cupid
+    public static void cupid(String user, String roomId, String cupid){
         Gson gson = new Gson();
         RoomPlayer player = new RoomPlayer(user, roomId);
+        player.setCupid(cupid);
         mSocket.emit("cupid", gson.toJson(player));
     }
 
-    //data: user || roomId
-    public static void guard(String user, String roomId){
+    //data: user || roomId || guard
+    public static void guard(String user, String roomId, String guard){
         Gson gson = new Gson();
         RoomPlayer player = new RoomPlayer(user, roomId);
+        player.setGuard(guard);
         mSocket.emit("protected", gson.toJson(player));
     }
 
@@ -113,10 +115,11 @@ public class SetupSocket {
         mSocket.emit("wolf", gson.toJson(player));
     }
 
-    //data: user || roomId
-    public static void prophesy(String user, String roomId){
+    //data: user || roomId || prophesy
+    public static void prophesy(String user, String roomId, String prophesy){
         Gson gson = new Gson();
         RoomPlayer player = new RoomPlayer(user, roomId);
+        player.setProphesy(prophesy);
         mSocket.emit("prophesy", gson.toJson(player));
     }
 
@@ -127,17 +130,21 @@ public class SetupSocket {
         mSocket.emit("witch", gson.toJson(player));
     }
 
-    //data: user || roomId
-    public static void flute(String user, String roomId){
+    //data: user || roomId || flute
+    public static void flute(String user, String roomId, String flute){
         Gson gson = new Gson();
-        RoomPlayer player = new RoomPlayer(user, roomId);
+        RoomPlayer player = new RoomPlayer();
+        player.setUser(user);
+        player.setRoomId(roomId);
+        player.setFlute(flute);
         mSocket.emit("flute", gson.toJson(player));
     }
 
-    //data: user || roomId
-    public static void hunter(String user, String roomId){
+    //data: user || roomId || hunter
+    public static void hunter(String user, String roomId, String hunter){
         Gson gson = new Gson();
         RoomPlayer player = new RoomPlayer(user, roomId);
+        player.setHunter(hunter);
         mSocket.emit("hunter", gson.toJson(player));
     }
 
