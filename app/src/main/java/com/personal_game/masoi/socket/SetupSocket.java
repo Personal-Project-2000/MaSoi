@@ -37,12 +37,12 @@ public class SetupSocket {
 //        mSocket.connect();
 //    }
 
-    //data: user || device
-    public static void signIn(String user){
+    //data: user || device || name
+    public static void signIn(String user, String name){
         mSocket.connect();
 
         Gson gson = new Gson();
-        User user1 = new User(user, "");
+        User user1 = new User(user, "", name);
         mSocket.emit("login", gson.toJson(user1));
     }
 

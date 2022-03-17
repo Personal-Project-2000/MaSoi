@@ -152,7 +152,7 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(getApplication(), response.body().getNotification1(), Toast.LENGTH_SHORT).show();
 
                 if(response.body().getStatus1() == 1){
-                    SetupSocket.signIn(Tk);
+                    SetupSocket.signIn(Tk, response.body().getId1());
                 }
             }
 

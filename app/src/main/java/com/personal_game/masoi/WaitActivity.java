@@ -129,7 +129,7 @@ public class WaitActivity extends AppCompatActivity {
                             }, room.getId());
 
                             dialog.show();
-                            dialog.getWindow().setLayout(700, 1050);
+                            //dialog.getWindow().setLayout(700, 1050);
                         }
                         else{
                             Toast.makeText(getApplication(), "Chủ phòng mới sử dụng được chức năng này", Toast.LENGTH_SHORT).show();
@@ -148,7 +148,7 @@ public class WaitActivity extends AppCompatActivity {
                         }, "Bạn muốn rời khỏi phòng?");
 
                         dialog.show();
-                        dialog.getWindow().setLayout(600, 250);
+                        //dialog.getWindow().setLayout(600, 250);
                         break;
                     }
                 }

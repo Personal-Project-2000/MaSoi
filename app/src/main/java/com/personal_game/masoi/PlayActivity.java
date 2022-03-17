@@ -219,7 +219,7 @@ public class PlayActivity extends AppCompatActivity {
             }, "Bạn muốn rời khỏi phòng?");
 
             dialog.show();
-            dialog.getWindow().setLayout(600, 250);
+            //dialog.getWindow().setLayout(600, 250);
         });
 
         activityPlayBinding.imgGia.setOnClickListener(v -> {
@@ -278,7 +278,7 @@ public class PlayActivity extends AppCompatActivity {
                         }, "Bạn không muốn giết ai?");
 
                         dialog.show();
-                        dialog.getWindow().setLayout(600, 300);
+                        //dialog.getWindow().setLayout(600, 300);
                     }
                     break;
                     //Tiên tri
@@ -298,7 +298,7 @@ public class PlayActivity extends AppCompatActivity {
                         }, "Bạn không muốn bảo vệ ai?");
 
                         dialog.show();
-                        dialog.getWindow().setLayout(600, 300);
+                        //dialog.getWindow().setLayout(600, 300);
                     }
                     break;
                     //Phù Thủy
@@ -363,7 +363,7 @@ public class PlayActivity extends AppCompatActivity {
                                     }, "Bạn muốn giết " + player.getName() + "?");
 
                                     dialog.show();
-                                    dialog.getWindow().setLayout(600, 300);
+                                    //dialog.getWindow().setLayout(600, 300);
                                 }
                                 break;
                                 //Tiên tri
@@ -377,7 +377,7 @@ public class PlayActivity extends AppCompatActivity {
                                     }, "Bạn muốn xem " + player.getName() + " có phải sói không?");
 
                                     dialog.show();
-                                    dialog.getWindow().setLayout(600, 300);
+                                    //dialog.getWindow().setLayout(600, 300);
                                 }
                                 break;
                                 //Bảo vệ
@@ -391,7 +391,7 @@ public class PlayActivity extends AppCompatActivity {
                                     }, "Bạn bảo vệ " + player.getName() + " đêm nay có phải sói không?");
 
                                     dialog.show();
-                                    dialog.getWindow().setLayout(600, 300);
+                                    //dialog.getWindow().setLayout(600, 300);
                                 }
                                 break;
                                 //Phù Thủy
@@ -420,7 +420,7 @@ public class PlayActivity extends AppCompatActivity {
                                                 }, "Bạn muốn cứu " + player.getName() + " có phải không?");
 
                                                 dialog.show();
-                                                dialog.getWindow().setLayout(600, 300);
+                                                //dialog.getWindow().setLayout(600, 300);
                                             } else {
                                                 Toast.makeText(getApplication(), "Bạn đã sử dụng bình cứu, chi có thể bấm bỏ qua", Toast.LENGTH_SHORT).show();
                                             }
@@ -441,7 +441,7 @@ public class PlayActivity extends AppCompatActivity {
                                                 }, "Bạn muốn giết " + player.getName() + " có phải không?");
 
                                                 dialog.show();
-                                                dialog.getWindow().setLayout(600, 300);
+                                                //dialog.getWindow().setLayout(600, 300);
                                         } else {
                                             Toast.makeText(getApplication(), "Bạn đã sử dụng bình giết, chi có thể bấm bỏ qua", Toast.LENGTH_SHORT).show();
                                         }
